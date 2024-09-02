@@ -9,6 +9,7 @@ const UserProfile = () => {
   const [status, setStatus] = useState(0);
   const [graphData, setGraphData] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const [gifSrc, setGifSrc] = useState("ducky.gif"); // State for the gif source
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -58,13 +59,32 @@ const UserProfile = () => {
     fetchGraphData();
   }, []);
 
+  // Handle gif click
+  const handleGifClick = () => {
+    setGifSrc("heart.gif"); // Change to heart.gif on click
+
+    // Revert back to ducky.gif after 2 seconds
+    setTimeout(() => {
+      setGifSrc("ducky.gif");
+    }, 2000); // Adjust the duration as needed
+  };
+
   return (
     <div>
       <h1>{username}</h1>
       {avatar && <img src={avatar} alt="User Avatar" width="100" />}
       <div>
+        <img
+          className="ducky1"
+          src={gifSrc}
+          alt="User Avatar"
+          onClick={handleGifClick}
+          style={{ cursor: 'pointer' }} // Optional: Show a pointer cursor to indicate it's clickable
+        />
+      </div>
+      <div>
         <label>Status:</label>
-        <progress value={status} min= "0" max="100"></progress>
+        <progress value={status} min="0" max="100"></progress>
       </div>
 
       <div>

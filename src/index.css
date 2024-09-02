@@ -5,7 +5,6 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  /* background-color: #61ae91; */
   background-image:
 	  radial-gradient(60% 50% ellipse at center bottom, #61ae91 0%, #1a7488 100%);
   background-attachment: fixed;
@@ -112,15 +111,29 @@
   background: #ff0800;
 }
 
-.title-box{
-  background: rgb(203, 201, 201) ;
+.title-box {
+  background: rgb(203, 201, 201);
   width: 800px;
-  
+  margin: 20px auto 0;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-.title{
+
+.title {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  text-align: center; 
   color: black;
+}
+
+.duck {
+  width: 200px;
+  height: auto;
+}
+
+.ducky1{
+  width: 200px;
+  height: auto;
 }
