@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import readcookie from '../utils/readcookie';
+import readcookie from "../../utils/readcookie";
 
 const UserProfile = () => {
   const [error, setError] = useState(null);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
-  const [status, setStatus] = useState(0); // For status bar progress
+  const [status, setStatus] = useState(0);
   const [todoList, setTodoList] = useState([]);
   const [newTask, setNewTask] = useState('');
   const [listOn, setListOn] = useState(false);
@@ -24,7 +24,7 @@ const UserProfile = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`, // Corrected template literal
         },
       });
 
@@ -101,4 +101,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import readcookie from '../utils/readcookie';
+import readcookie from "../../utils/readcookie";
+
 
 const ListUsers = () => {
   const [userList, setUserList] = useState([]);

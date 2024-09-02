@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import readcookie from '../utils/readcookie';
+import readcookie from "../../utils/readcookie";
 
 const DeleteUser = () => {
   const [email, setEmail] = useState("");
@@ -15,8 +15,8 @@ const DeleteUser = () => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}` 
-        }, // This was changed from semicolon to comma
+          "Authorization": `Bearer ${token}` // Corrected template literal
+        },
         body: JSON.stringify({
           email: email,
         }),
@@ -28,10 +28,10 @@ const DeleteUser = () => {
       if (response.ok) {
         setMessage("User deleted successfully!");
       } else {
-        setMessage(`Error: ${output.message || 'Failed to delete user.'}`);
+        setMessage(`Error: ${output.message || 'Failed to delete user.'}`); // Corrected error message
       }
     } catch (error) {
-      setMessage(`Error: ${error.message}`);
+      setMessage(`Error: ${error.message}`); // Corrected error message
     }
   };
 

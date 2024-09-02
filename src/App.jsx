@@ -1,40 +1,32 @@
 import './App.css';
+import './index.css';
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Register from './components/registerUser';
-import Login from './components/login';
-import ListUsers from './components/listUsers';
-import UpdateUser from './components/updateuser';
-import DeleteUser from './components/deleteuser';
-import UserProfile from './components/userprofile';
 import { Link } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import RegisterUser from './components/user/registerUser';
+import Login from './components/user/login';
+import ListUsers from './components/user/listUsers';
+import UpdateUser from './components/user/updateuser';
+import DeleteUser from './components/user/deleteuser';
+import UserProfile from './components/user/userprofile';
+import Home from './components/Home';
+
+
 
 function App() {
-
-
   return (
     <Router>
-      <div className="App">
-      <nav>
-        <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/register">Sign-Up</Link></li>
-          <li><Link to="/login">Login</Link></li>
-          <li><Link to="/list-users">List Users</Link></li>
-          <li><Link to="/update-user">Update User</Link></li>
-          <li><Link to="/delete-user">Delete User</Link></li>
-          <li><Link to="/user-profile">User Profile</Link></li>
-        </ul>
-      </nav>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/user-profile" element={<UserProfile />} />
-          <Route path="/list-users" element={<ListUsers />} />
-          <Route path="/update-user" element={<UpdateUser />} />
-          <Route path="/delete-user" element={<DeleteUser />} />
-        </Routes>
-      </div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/register-user" element={<RegisterUser />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/user-list" element={<ListUsers />} />
+        <Route path="/user-profile" element={<UserProfile />} />
+        <Route path="/update-user" element={<UpdateUser />} />
+        <Route path="/delete-user" element={<DeleteUser />} />
+      </Routes>
     </Router>
   );
 }

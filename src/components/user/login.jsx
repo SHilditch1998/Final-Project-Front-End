@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import writecookie from '../utils/writecookie';
+import writecookie from '../../utils/writecookie';
 
 const Login = () => {
   const [email, setEmail] = useState("");

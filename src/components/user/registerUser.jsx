@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import writecookie from '../utils/writecookie';
+import writecookie from '../../utils/writecookie';
 
-const Register = () => {
+
+const RegisterUser = () => {
   const [userid, setUserid] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,4 +55,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterUser;
