@@ -5,15 +5,13 @@ import readcookie from "../../utils/readcookie";
 const UserProfile = () => {
   const [error, setError] = useState(null);
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
   const [avatar, setAvatar] = useState('');
   const [status, setStatus] = useState(0);
-  const [todoList, setTodoList] = useState([]);
-  const [newTask, setNewTask] = useState('');
-  const [listOn, setListOn] = useState(false);
+  const [graphData, setGraphData] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserData = async () => {
       const token = readcookie("jwt_token");
       if (!token) {
         setError("You must be logged in to view this page.");
@@ -24,78 +22,66 @@ const UserProfile = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`, // Corrected template literal
+          "Authorization": `Bearer ${token}`,
         },
       });
 
       const output = await response.json();
       if (response.ok) {
         setUsername(output.username);
-        setEmail(output.email);
         setAvatar(output.avatar);
-        setTodoList(output.todoList);
         setStatus(output.status);
-        setListOn(true);
         setError(null);
       } else {
         setError(output.message || "Failed to fetch user data.");
-        setListOn(false);
       }
     };
 
-    fetchData();
+    const fetchGraphData = async () => {
+      try {
+        const response = await fetch("https://pixe.la/v1/users/a-know/graphs/test-graph.html");
+
+        if (!response.ok) {
+          throw new Error("Error fetching graph data");
+        }
+
+        const data = await response.json();
+        setGraphData(data);
+        setErrorMsg("");
+      } catch (error) {
+        console.error(error.message);
+        setErrorMsg("Graph Data Currently Unavailable");
+      }
+    };
+
+    fetchUserData();
+    fetchGraphData();
   }, []);
-
-  const addTaskHandler = () => {
-    if (newTask.trim()) {
-      setTodoList([...todoList, { task: newTask, completed: false }]);
-      setNewTask('');
-    }
-  };
-
-  const completeTaskHandler = (index) => {
-    const updatedList = todoList.map((item, i) =>
-      i === index ? { ...item, completed: !item.completed } : item
-    );
-    setTodoList(updatedList);
-    setStatus(updatedList.filter(item => item.completed).length / updatedList.length * 100);
-  };
 
   return (
     <div>
       <h1>{username}</h1>
       {avatar && <img src={avatar} alt="User Avatar" width="100" />}
-      <h2>Email: {email}</h2>
       <div>
         <label>Status:</label>
-        <progress value={status} max="100"></progress>
+        <progress value={status} min= "0" max="100"></progress>
       </div>
 
       <div>
-        <h3>To-Do List</h3>
-        <input 
-          type="text" 
-          value={newTask} 
-          onChange={(e) => setNewTask(e.target.value)} 
-          placeholder="New Task" 
-        />
-        <button onClick={addTaskHandler}>Add Task</button>
-        <ul>
-          {todoList.map((item, index) => (
-            <li key={index}>
-              <span style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>
-                {item.task}
-              </span>
-              <button onClick={() => completeTaskHandler(index)}>
-                {item.completed ? 'Undo' : 'Complete'}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <h3>Your Habits</h3>
+        {errorMsg ? (
+          <p style={{ color: 'red' }}>{errorMsg}</p>
+        ) : (
+          graphData && (
+            <div>
+              <img src={`data:image/svg+xml;base64,${btoa(graphData)}`} alt="User Habit Tracker Graph" />
+            </div>
+          )
+        )}
       </div>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {!listOn && <h1>Please login to proceed</h1>}
+      {!error && <h1>Please login to proceed</h1>}
     </div>
   );
 };

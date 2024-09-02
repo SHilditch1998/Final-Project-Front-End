@@ -11,7 +11,7 @@ const Login = () => {
     event.preventDefault();
     
     try {
-      const response = await fetch("INSERT BACKEND URL HERE", { // Ensure the fetch call is uncommented and URL is provided
+      const response = await fetch("INSERT BACKEND URL HERE", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -25,7 +25,7 @@ const Login = () => {
       const output = await response.json();
       if (output.token) {
         writecookie("jwt_token", output.token, 14);
-        navigate('/list-users'); // Redirect after successful login
+        navigate('/list-users');
       } else {
         console.error('Login failed:', output.message);
       }
