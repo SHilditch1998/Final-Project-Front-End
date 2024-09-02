@@ -6,6 +6,7 @@ import Login from './components/login';
 import ListUsers from './components/listUsers';
 import UpdateUser from './components/updateuser';
 import DeleteUser from './components/deleteuser';
+import UserProfile from './components/userprofile';
 import { Link } from 'react-router-dom';
 
 function App() {

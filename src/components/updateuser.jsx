@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import readcookie from '../utils/readcookie';
+import writecookie from '../utils/writecookie';
 
 const UpdateUser = () => {
   const [email, setEmail] = useState("");
@@ -8,23 +8,22 @@ const UpdateUser = () => {
   const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  //SUBMITHANDLER
   const submitHandler = async (event) => {
     event.preventDefault();
     const token = readcookie("jwt_token");
 
     try {
-      // const response = await fetch("INSERT BACKEND URL HERE", {
+      const response = await fetch("INSERT BACKEND URL HERE", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
+          "Authorization": `Bearer ${token}`,
+        }, // Ensure there is a comma after this line
         body: JSON.stringify({
           email: email,
-          oldPassword: oldPassword,  // Include the old password
-          newPassword: newPassword   // Include the new password
-        })
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        }), // Also a comma here for consistency
       });
 
       const output = await response.json();
@@ -36,7 +35,7 @@ const UpdateUser = () => {
     } catch (error) {
       setMessage(`Error: ${error.message}`);
     }
-  }
+  };
 
   return (
     <div>
@@ -57,6 +56,6 @@ const UpdateUser = () => {
       <hr />
     </div>
   );
-}
+};
 
 export default UpdateUser;

@@ -1,6 +1,6 @@
-import { useState} from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import writecookie from '../utils/writecookie';
 
 const Register = () => {
   const [userid, setUserid] = useState("");
@@ -15,23 +15,24 @@ const Register = () => {
       return;
     }
 
-    const response = await fetch(
-      // "INSERT BACKEND URL HERE",
-      {
+    try {
+      const response = await fetch("INSERT BACKEND URL HERE", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({ username: userid, email: email, password: password })
+      });
+
+      const output = await response.json();
+      if (response.ok) {
+        console.log("SUCCESS");
+        setError(null);
+      } else {
+        setError(output.message || "Registration failed.");
       }
-    );
-    const output = await response.json();
-    if (response.ok) {
-      console.log("SUCCESS");
-      
-      setError(null);
-    } else {
-      setError(output.message || "Registration failed.");
+    } catch (error) {
+      setError(`Error: ${error.message}`);
     }
   };
 
@@ -51,7 +52,6 @@ const Register = () => {
       <hr />
     </div>
   );
-}
+};
 
-
-export default Register
+export default Register;

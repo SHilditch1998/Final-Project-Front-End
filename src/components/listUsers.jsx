@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import readcookie from '../utils/readcookie';
 
@@ -15,20 +15,26 @@ const ListUsers = () => {
       return;
     }
 
-    // const response = await fetch("INSERT BACKEND URL HERE", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+    try {
+      const response = await fetch("INSERT BACKEND URL HERE", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+
+      const output = await response.json();
+      if (response.ok) {
+        setUserList(output.userlist);
+        setListOn(true);
+        setError(null);
+      } else {
+        setError(output.message || "Failed to fetch user list.");
+        setListOn(false);
       }
-    });
-    const output = await response.json();
-    if (response.ok) {
-      setUserList(output.userlist);
-      setListOn(true);
-      setError(null);
-    } else {
-      setError(output.message || "Failed to fetch user list.");
+    } catch (error) {
+      setError(`Error: ${error.message}`);
       setListOn(false);
     }
   };
