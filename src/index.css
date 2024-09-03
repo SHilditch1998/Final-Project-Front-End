@@ -16,12 +16,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* @font-face {
+@font-face {
   font-family: 'Duck';
   src: url('./assets/fonts/Duck-Regular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
-} */
+}
 
 @font-face {
   font-family: 'Fried';
@@ -30,13 +30,12 @@
   font-style: normal;
 }
 
-/* @font-face {
+@font-face {
   font-family: 'Spicy';
   src: url('./assets/fonts/DuckSpicy.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
-} */
-
+}
 
 
 .navbar {
@@ -81,12 +80,14 @@
   cursor: pointer;
   font-size: 16px;
   font-weight: normal;
+  font-family: 'Fried', Arial, sans-serif;
 }
 
 .dropbtn{
   background: #199e97;
   border: none;
   font-size: 16px;
+
 }
 
 .dropdown-menu {
@@ -168,6 +169,7 @@
   width: 200px;
   height: auto;
 }
+
 .home-container {
   display: flex;
   flex-direction: column;
@@ -219,6 +221,7 @@ border: none;
 padding: 10px 20px;
 border-radius: 5px;
 cursor: pointer;
+font-family: 'Fried'; /* can change font to preference */
 }
 
 .login-btn:hover{
