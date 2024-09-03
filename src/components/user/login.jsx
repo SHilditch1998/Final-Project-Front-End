@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import writecookie from '../../utils/writecookie';
-
+import readcookie from '../../utils/readcookie'; 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +25,7 @@ const Login = () => {
       const output = await response.json();
       if (output.token) {
         writecookie("jwt_token", output.token, 14);
-        navigate('/list-users');
+        navigate('/user-profile'); // Redirect to the profile page after login
       } else {
         console.error('Login failed:', output.message);
       }
@@ -35,7 +35,7 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className="login-form">
       <h1>Login</h1>
       <form onSubmit={submitHandler}>
         <label>Email</label><br />
@@ -56,7 +56,6 @@ const Login = () => {
 
         <input type='submit' value="Submit" />
       </form>
-      <hr />
     </div>
   );
 }

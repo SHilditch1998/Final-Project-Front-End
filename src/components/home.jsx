@@ -1,24 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import writecookie from '../utils/writecookie';
-import readcookie from '../utils/readcookie';  // Assuming you have a readcookie utility
+import readcookie from '../utils/readcookie'; 
 
 const Home = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const token = readcookie('jwt_token');
-
-  useEffect(() => {
-    if (token) {
-      navigate('/user-profile');
-    }
-  }, [token, navigate]);
-
-  // If a token is found, the user will be redirected
-  if (token) {
-    return null; // Prevents rendering the login form if the user is redirected
-  }
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -38,7 +27,7 @@ const Home = () => {
       const output = await response.json();
       if (output.token) {
         writecookie("jwt_token", output.token, 14);
-        navigate('/user-profile'); // Redirect to a protected page after login
+        navigate('/user-profile'); // Redirect to the profile page after login
       } else {
         console.error('Login failed:', output.message);
       }

@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom';
-import readcookie from '../../utils/readcookie'; // Assuming you have this utility
+import readcookie from '../../utils/readcookie';
 
 const ProtectedRoute = ({ element: Component }) => {
-  const token = readcookie('jwt_token'); // Check if the user is authenticated
+  const token = readcookie('jwt_token'); 
 
-  return token ? <Component /> : <Navigate to="/" />;
+  return token ? <Component /> : <Navigate to="/login" />; // Redirect to login if not authenticated
 };
 
 export default ProtectedRoute;

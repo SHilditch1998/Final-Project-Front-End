@@ -11,14 +11,13 @@ import UserProfile from './components/user/userprofile';
 import Home from './components/Home';
 import ProtectedRoute from './components/user/ProtectedRoute';
 
-
-
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register-user" element={<RegisterUser />} />
         {/* Protect these routes */}
         <Route path="/user-list" element={<ProtectedRoute element={ListUsers} />} />

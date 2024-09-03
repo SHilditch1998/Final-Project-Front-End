@@ -11,10 +11,8 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-
     cookies.remove('jwt_token');
-  
-    navigate('/login');
+    navigate('/login'); // Redirect to login after logging out
   };
 
   return (
@@ -30,7 +28,7 @@ const Navbar = () => {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/register-user">Sign Up</Link></li>
             <li><Link to="/login">Login</Link></li>
-            <li><Link to="/user-list">List of Ducks</Link></li>
+            <li><Link to="/user-list">Social Pond</Link></li>
             <li className="dropdown">
               <button onClick={toggleDropdown} className="dropbtn">
                 Account
@@ -51,4 +49,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

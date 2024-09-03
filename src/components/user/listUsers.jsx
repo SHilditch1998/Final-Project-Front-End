@@ -42,7 +42,7 @@ const ListUsers = () => {
 
   return (
     <div>
-      <h1>List Users</h1>
+      <h1>Social Pond</h1>
       <button onClick={clickHandler}>List Users</button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <hr />
