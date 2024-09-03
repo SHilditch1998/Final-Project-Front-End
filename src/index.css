@@ -1,10 +1,12 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: 'Duck', Arial; */
+  font-family: 'Fried', Arial;
+  /* font-family: 'Spicy', Arial; */
+
   line-height: 1.5;
   font-weight: 400;
-
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(255, 255, 255, 0.797);
   background-image:
 	  radial-gradient(60% 50% ellipse at center bottom, #61ae91 0%, #1a7488 100%);
   background-attachment: fixed;
@@ -13,6 +15,29 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* @font-face {
+  font-family: 'Duck';
+  src: url('./assets/fonts/Duck-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+} */
+
+@font-face {
+  font-family: 'Fried';
+  src: url('./assets/fonts/FriedDuck.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* @font-face {
+  font-family: 'Spicy';
+  src: url('./assets/fonts/DuckSpicy.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+} */
+
+
 
 .navbar {
   background-color: #2f89a4;
@@ -118,7 +143,7 @@
 }
 
 .title-box {
-  background: rgb(203, 201, 201);
+  background: rgba(255, 255, 255, 0.8);
   width: 800px;
   margin: 20px auto 0;
   padding: 20px;
