@@ -28,6 +28,8 @@
 
 .navbar-links li {
   float: left;
+  display: flex;
+  justify-items: center;
 }
 
 .navbar-links li a, .dropbtn {
@@ -50,12 +52,16 @@
   background: #199e9700;
   color: #fff;
   border: none;
-  padding: 10px;
+  padding: 14px 16px;
   cursor: pointer;
+  font-size: 16px;
+  font-weight: normal;
 }
+
 .dropbtn{
   background: #199e97;
   border: none;
+  font-size: 16px;
 }
 
 .dropdown-menu {
