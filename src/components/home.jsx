@@ -65,7 +65,7 @@ const Home = () => {
             onChange={(event) => setPassword(event.target.value)} 
           /><br /><br />
 
-          <input type='submit' value="Submit" />
+          <input type='submit' value="Submit" className= "login-btn"/>
         </form>
       </div>
     </div>
