@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import readcookie from "../../utils/readcookie";
 
-
 const ListUsers = () => {
-  const [userList, setUserList] = useState([]);
+  const [userList, setUserList] = useState([]); // Initialize as an empty array
   const [listOn, setListOn] = useState(false);
   const [error, setError] = useState(null);
 
@@ -26,8 +25,10 @@ const ListUsers = () => {
       });
 
       const output = await response.json();
+      console.log(output);
+
       if (response.ok) {
-        setUserList(output.userlist);
+        setUserList(output.ListAccounts || []);
         setListOn(true);
         setError(null);
       } else {
@@ -43,16 +44,20 @@ const ListUsers = () => {
   return (
     <div>
       <h1>Social Pond</h1>
-      <button onClick={clickHandler}>List Users</button>
+      <button className="list-btn" onClick={clickHandler}>List Users</button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <hr />
       {listOn ? (
-        userList.map((item, index) => (
-          <div key={index}>
-            <h2>User ID = {item.username}</h2>
-            <h2>Email = {item.email}</h2>
-          </div>
-        ))
+        Array.isArray(userList) && userList.length > 0 ? (
+          userList.map((item, index) => (
+            <div key={index}>
+              <h2>User ID = {item.username}</h2>
+              <h2>Email = {item.email}</h2><br></br>
+            </div>
+          ))
+        ) : (
+          <p>No users found.</p>
+        )
       ) : (
         <h1>Please login to proceed</h1>
       )}

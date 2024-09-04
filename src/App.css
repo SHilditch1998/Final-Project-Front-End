@@ -91,3 +91,15 @@
   margin: 0 auto;
   margin-top: 40px;
 }
+.list-btn{
+  font-family: 'spicy', 'arial';
+  background-color: #ffbf00;
+  color:black;
+  display: inline-block;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid #886100;
+  border-radius: 5px; 
+  transition: background-color 0.3s, border-color 0.3s;
+}

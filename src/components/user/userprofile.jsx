@@ -44,7 +44,7 @@ const UserProfile = () => {
 
     const fetchGraphData = async () => {
       try {
-        const response = await fetch("https://pixe.la/v1/users/a-know/graphs/test-graph?date=20240904&mode=long&appearance=light");
+        const response = await fetch("https://pixe.la/v1/users/a-know/graphs/test-graph?BST&mode=long&appearance=light");
 
         if (!response.ok) {
           throw new Error("Error fetching graph data");
@@ -91,9 +91,6 @@ const UserProfile = () => {
                 onClick={handleGifClick}
                 style={{ cursor: 'pointer' }}
               />
-            </div>
-            <div>
-              <p>CURRENCY GOES HERE?</p>
             </div>
             <div className="status-bar">
               <label>Progress: </label>
