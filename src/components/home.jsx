@@ -41,7 +41,7 @@ const Home = () => {
       <div className="title-box">
         <div className="title">
           <h1>WADDLES</h1>
-          <img className="duck" src="/waddles-icon.png" alt="Waddles Icon"/>
+          <img className="duck" src="/ducktrack.png" alt="ducktrack Icon"/>
           <h2>Your new favourite habit-tracker</h2>
         </div>
       </div>
