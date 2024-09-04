@@ -40,7 +40,16 @@
 
 .navbar {
   background-color: #2f89a4;
-  overflow: hidden;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+.navbar-logo img {
+  height: 50px;
+  transform: rotate(90deg);
+  transform-origin: center;
 }
 
 .navbar-links {
@@ -48,15 +57,15 @@
   margin: 0;
   padding: 0;
   display: flex;
+  flex-grow: 2; 
+  justify-content: center; 
 }
 
-.navbar-links li {
-  float: left;
-  display: flex;
-  justify-items: center;
+.navbar-links .nav-item {
+  margin: 0 15px;
 }
 
-.navbar-links li a, .dropbtn {
+.navbar-links .nav-item a {
   display: inline-block;
   color: white;
   text-align: center;
@@ -64,70 +73,8 @@
   text-decoration: none;
 }
 
-.navbar-links li a:hover, .dropdown:hover .dropbtn {
+.navbar-links .nav-item a:hover {
   background-color: #00fffb38;
-}
-
-.nav-item {
-  position: relative;
-}
-
-.dropdown-button {
-  background: #199e9700;
-  color: #fff;
-  border: none;
-  padding: 14px 16px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: normal;
-  font-family: 'Fried', Arial, sans-serif;
-}
-
-.dropbtn{
-  background: #199e97;
-  border: none;
-  font-size: 16px;
-  font-family: 'Spicy';
-}
-
-.dropdown-menu {
-  display: block;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: #208171;
-  color: #fff;
-  min-width: 150px;
-  z-index: 1000;
-}
-
-.dropdown-item {
-  display: block;
-  padding: 10px;
-  text-decoration: none;
-  color: #7b999c;
-}
-
-.dropdown-item:hover {
-  background: #5d7ea400;
-}
-
-
-.navbar {
-  background-color: #199e97;
-  padding: 10px;
-}
-
-.navbar-nav {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  align-items: center;
-}
-
-.nav-item {
-  margin-left: 20px;
 }
 
 .logout-button {
@@ -151,7 +98,6 @@
   border-radius: 10px;
 }
 
-
 .title {
   font-family: 'Fried', Arial;
   display: flex;
@@ -161,22 +107,9 @@
   color: black;
 }
 
-.duck {
+.duck, .ducky1 {
   width: 200px;
   height: auto;
-}
-
-.ducky1{
-  width: 200px;
-  height: auto;
-}
-
-.home-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
 }
 
 .home-container {
@@ -203,17 +136,17 @@
   font-family: 'Duck', Arial;
 }
 
-.login-btn{
-color: rgb(255, 255, 255);
-background-color: green;
-border: none;
-padding: 10px 20px;
-border-radius: 5px;
-cursor: pointer;
-font-family: 'Fried'; 
+.login-btn {
+  color: rgb(255, 255, 255);
+  background-color: green;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Fried'; 
 }
 
-.login-btn:hover{
+.login-btn:hover {
   color: rgb(0, 0, 0);
   background-color: rgb(85, 244, 85);
 }

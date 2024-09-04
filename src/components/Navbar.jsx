@@ -12,22 +12,29 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <ul className="navbar-nav">
+      <div className="navbar-logo">
+        <img src="./ducktrack.png" alt="Logo"/> 
+      </div>
+      <ul className="navbar-links">
         <li className="nav-item">
-          <button onClick={handleLogout} className="logout-button">
-            Logout
-          </button>
+          <Link to="/">Home</Link>
         </li>
         <li className="nav-item">
-          <ul className="navbar-links">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/register-user">Sign Up</Link></li>
-            <li><Link to="/login">Login</Link></li>
-            <li><Link to="/user-list">Social Pond</Link></li>
-            <li><Link to="/user-profile">Profile</Link></li>
-          </ul>
+          <Link to="/register-user">Sign Up</Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/login">Login</Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/user-list">Social Pond</Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/user-profile">Profile</Link>
         </li>
       </ul>
+      <button onClick={handleLogout} className="logout-button">
+        Logout
+      </button>
     </nav>
   );
 };
