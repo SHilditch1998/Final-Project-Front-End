@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import cookies from 'js-cookie';
 
 const Navbar = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
 
   const handleLogout = () => {
     cookies.remove('jwt_token');
@@ -29,18 +24,7 @@ const Navbar = () => {
             <li><Link to="/register-user">Sign Up</Link></li>
             <li><Link to="/login">Login</Link></li>
             <li><Link to="/user-list">Social Pond</Link></li>
-            <li className="dropdown">
-              <button onClick={toggleDropdown} className="dropbtn">
-                Account
-              </button>
-              {dropdownOpen && (
-                <div className="dropdown-content">
-                  <Link to="/user-profile">Profile</Link>
-                  <Link to="/update-user">Update Account</Link>
-                  <Link to="/delete-user">Delete Account</Link>
-                </div>
-              )}
-            </li>
+            <li><Link to="/user-profile">Profile</Link></li>
           </ul>
         </li>
       </ul>

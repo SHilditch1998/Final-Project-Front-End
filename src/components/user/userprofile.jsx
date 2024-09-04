@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';  // Import Link from react-router-dom
 import readcookie from "../../utils/readcookie";
 import '../../App.css';
 import '../../index.css';
@@ -93,12 +93,16 @@ const UserProfile = () => {
               />
             </div>
             <div>
-            <p>CURRENCY GOES HERE?</p>
+              <p>CURRENCY GOES HERE?</p>
             </div>
             <div className="status-bar">
               <label>Progress: </label>
               <progress value={status} min="0" max="100"></progress>
             </div>
+            <ul className="change-account">
+              <li><Link to="/update-user">Update Account</Link></li>
+              <li><Link to="/delete-user">Delete Account</Link></li>
+            </ul>
           </div>
         </div>
 
