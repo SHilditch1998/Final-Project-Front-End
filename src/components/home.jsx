@@ -13,7 +13,7 @@ const Home = () => {
     event.preventDefault();
     
     try {
-      const response = await fetch("INSERT BACKEND URL HERE", {
+      const response = await fetch("http://localhost:5003/Account/Login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -21,7 +21,7 @@ const UserProfile = () => {
         return;
       }
 
-      const response = await fetch("INSERT BACKEND URL HERE", {
+      const response = await fetch("http://localhost:5003/Friends/List", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -30,6 +30,8 @@ const UserProfile = () => {
       });
 
       const output = await response.json();
+      console.log(output);
+      
       if (response.ok) {
         setUsername(output.username);
         setAvatar(output.avatar);
@@ -42,14 +44,18 @@ const UserProfile = () => {
 
     const fetchGraphData = async () => {
       try {
-        const response = await fetch("https://pixe.la/v1/users/a-know/graphs/test-graph.html");
+        const response = await fetch("https://pixe.la/v1/users/a-know/graphs/test-graph?date=20240904&mode=long&appearance=light");
 
         if (!response.ok) {
           throw new Error("Error fetching graph data");
         }
-
-        const data = await response.json();
+        
+        const data = await response.text();
+            
         setGraphData(data);
+        console.log(data);
+        
+        
         setErrorMsg("");
       } catch (error) {
         console.error(error.message);
@@ -86,8 +92,11 @@ const UserProfile = () => {
                 style={{ cursor: 'pointer' }}
               />
             </div>
+            <div>
+            <p>CURRENCY GOES HERE?</p>
+            </div>
             <div className="status-bar">
-              <label>Status:</label>
+              <label>Progress: </label>
               <progress value={status} min="0" max="100"></progress>
             </div>
           </div>
@@ -105,7 +114,11 @@ const UserProfile = () => {
                 </div>
               )
             )}
+            <p>Add task</p>
+            <p>Update habits</p>
+            <p>Delete Task</p>
           </div>
+          <p>add buttons here?</p>
         </div>
       </div>
     </div>
