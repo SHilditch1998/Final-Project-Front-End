@@ -129,3 +129,9 @@
   color: black;
   font-weight: bolder;
 }
+
+.user-id-error {
+  font-family: sans-serif;
+  font-weight: bold;
+  color: red;
+}

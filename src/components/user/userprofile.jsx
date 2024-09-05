@@ -61,7 +61,11 @@ const UserProfile = () => {
         <div className="user-info">
           <div className="avatar-box light-box">
             <h1>{username}</h1>
-            {userID ? <p>{userID}</p> : <p>User ID Not Available</p>}
+            {userID ? (
+              <p className="user-id-error">{userID}</p>
+            ) : (
+              <p className="user-id-error">User ID Not Available</p>
+            )}
             {avatar && <img src={avatar} alt="User Avatar" width="100" />}
             <div>
               <img
