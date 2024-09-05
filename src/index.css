@@ -172,10 +172,31 @@
   border: 1px solid #886100;
   border-radius: 5px; 
   transition: background-color 0.3s, border-color 0.3s;
+  font-family: 'Duck', 'arial';
 }
 
 .change-account a:hover {
   background-color: #b30000;
   border-color: #b30000; 
   color: white;
+}
+
+.task-input{
+  background-color: rgb(255, 255, 255);
+  color: black;
+  border-radius: 5px;
+  border: 1px solid #886100;
+}
+
+.taskbutton{
+  background-color: #ffbf00;
+  color: #000000;
+  border: 1px solid #886100;
+  border-radius: 5px; 
+  margin-left: 10px;
+}
+
+.taskbutton:hover{
+  background-color: #f1e1b0;
+  color: #000000;
 }

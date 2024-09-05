@@ -15,7 +15,7 @@ const DeleteUser = () => {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}` // Corrected template literal
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
           email: email,
@@ -28,22 +28,23 @@ const DeleteUser = () => {
       if (response.ok) {
         setMessage("User deleted successfully!");
       } else {
-        setMessage(`Error: ${output.message || 'Failed to delete user.'}`); // Corrected error message
+        setMessage(`Error: ${output.message || 'Failed to delete user.'}`);
       }
     } catch (error) {
-      setMessage(`Error: ${error.message}`); // Corrected error message
+      setMessage(`Error: ${error.message}`);
     }
   };
 
   return (
-    <div>
+    <div className= "deletebox">
       <h1 className="delUser">DELETE USER</h1>
       <form onSubmit={submitHandler}>
         <label>Email</label><br />
         <input type='text' name='email' onChange={(event) => setEmail(event.target.value)} /><br /><br />
-        <input type='submit' value="Submit" />
+        <input className="delbtn" type='submit' value="CONFIRM" />
       </form>
-      <p>{message}</p>
+      <p style={{ color: message.startsWith('Error') ? 'red' : 'green', fontWeight: 'bold' }}>
+      {message}</p>
       <hr />
     </div>
   );

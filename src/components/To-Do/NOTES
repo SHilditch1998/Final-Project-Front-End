@@ -1,7 +1,0 @@
-//FETCH API https://pixe.la/v1/users/a-know/graphs/test-graph.html
-
-//https://pixe.la/v1/users/<username>/graphs/<graphID>/<yyyyMMdd>
-
-//https://pixe.la/v1/users/<username>/graphs/<graphID>/<yyyyMMdd></yyyyMMdd>
-
-//FETCH API https://pixe.la//@<username> 
