@@ -44,11 +44,11 @@
 }
 
 .data-box {
-  text-align: left;
+  text-align: center;
 }
 
 .data-box h3 {
-  font-size: 1.5rem;
+  font-size: 2rem;
   margin-bottom: 20px;
   color: black;
 }

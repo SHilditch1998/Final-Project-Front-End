@@ -14,7 +14,7 @@ const HabitTracker = () => {
   useEffect(() => {
     const fetchGraphData = async () => {
       try {
-        const response = await fetch(`https://pixe.la/v1/users/${username}/graphs/${graphID}?mode=long&appearance=light`, {
+        const response = await fetch(`https://pixe.la/v1/users/${username}/graphs/${graphID}?mode=short&appearance=light`, {
           headers: {
             'X-USER-TOKEN': token
           }
