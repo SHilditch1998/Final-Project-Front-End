@@ -7,17 +7,18 @@ const HabitTracker = () => {
   const [quantity, setQuantity] = useState('');
   const [responseMsg, setResponseMsg] = useState('');
 
-  const username = 'your-username';  // Replace with actual Pixela username
-  const graphID = 'test-graph';      // Replace with actual Pixela graphID
-  const token = 'thisissecret';      // Replace with your actual Pixela user token
+  const username = 'graphuser';  // Username for the generic account
+  const graphID = 'graph0001';   // Graph ID for the specific graph
+  const token = 'tokensecret';   // Token for the generic account
 
   useEffect(() => {
-
     const fetchGraphData = async () => {
       try {
-        // const response = await fetch(`https://pixe.la/v1/users/${username}/graphs/${graphID}?mode=long&appearance=light`);
-
-        const response = await fetch(`https://pixe.la/v1/users/ducktales/graphs/test-graph?mode=long&appearance=light`);
+        const response = await fetch(`https://pixe.la/v1/users/${username}/graphs/${graphID}?mode=long&appearance=light`, {
+          headers: {
+            'X-USER-TOKEN': token
+          }
+        });
 
         if (!response.ok) {
           throw new Error("Error fetching graph data");
@@ -61,7 +62,6 @@ const HabitTracker = () => {
     }
   };
 
-
   const handleDeleteTask = async () => {
     try {
       const formattedDate = date.replace(/-/g, '');
@@ -84,11 +84,23 @@ const HabitTracker = () => {
     }
   };
 
+  const responseMessageStyle = {
+    fontFamily: 'sans-serif',
+    fontWeight: 'bold',
+    color: 'green'
+  };
+
+  const errorMessageStyle = {
+    fontFamily: 'sans-serif',
+    fontWeight: 'bold',
+    color: 'red'
+  };
+
   return (
     <div className="data-box light-box">
       <h3>Your Habits</h3>
       {errorMsg ? (
-        <p style={{ color: 'red' }}>{errorMsg}</p>
+        <p style={errorMessageStyle}>{errorMsg}</p>
       ) : (
         graphData ? (
           <div>
@@ -99,35 +111,40 @@ const HabitTracker = () => {
         )
       )}
 
-      <div className= "tasks">
+      <div className="tasks">
         <h4>Add/Update Task</h4>
-        <input className= "task-input"
+        <input
+          className="task-input"
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
           placeholder="Enter Date (yyyy-MM-dd)"
         />
-        <input className= "task-input"
+        <input
+          className="task-input"
           type="number"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}
           placeholder="Enter Quantity"
         />
-        <button className= "taskbutton" onClick={handleAddOrUpdateTask}>Add/Update Task</button>
+        <button className="taskbutton" onClick={handleAddOrUpdateTask}>Add/Update Task</button>
       </div>
 
       <div>
         <h4>Delete Task</h4>
-        <input className= "task-input"
+        <input
+          className="task-input"
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
           placeholder="Enter Date (yyyy-MM-dd)"
         />
-        <button className= "taskbutton" onClick={handleDeleteTask}>Delete Task</button>
+        <button className="taskbutton" onClick={handleDeleteTask}>Delete Task</button>
       </div>
 
-      {responseMsg && <p>{responseMsg}</p>}
+      {responseMsg && (
+        <p style={responseMessageStyle}>{responseMsg}</p>
+      )}
     </div>
   );
 };
