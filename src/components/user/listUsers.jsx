@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import readcookie from "../../utils/readcookie";
 
 const ListUsers = () => {
-  const [userList, setUserList] = useState([]); // Initialize as an empty array
+  const [userList, setUserList] = useState([]);
   const [listOn, setListOn] = useState(false);
   const [error, setError] = useState(null);
 
@@ -51,8 +51,8 @@ const ListUsers = () => {
         Array.isArray(userList) && userList.length > 0 ? (
           userList.map((item, index) => (
             <div key={index}>
-              <h2>User ID = {item.username}</h2>
-              <h2>Email = {item.email}</h2><br></br>
+              <h2>User: {item.username}</h2>
+              <h2>Email: {item.email}</h2><br></br>
             </div>
           ))
         ) : (

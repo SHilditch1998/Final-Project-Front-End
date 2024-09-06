@@ -9,6 +9,11 @@ const RegisterUser = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const sanitizeUserId = (id) => {
+    // Convert to lowercase and remove special characters
+    return id.toLowerCase().replace(/[^a-z0-9]/g, '');
+  };
+
   const submitHandler = async (event) => {
     event.preventDefault();
     if (!userid || !email || !password) {
@@ -16,14 +21,16 @@ const RegisterUser = () => {
       return;
     }
 
+    const sanitizedUserId = sanitizeUserId(userid);
+
     try {
-      // Step 1: Register the user
+      // Step 1: Register the user with sanitizedUserId
       const response = await fetch("http://localhost:5003/Account/Register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ username: userid, email: email, password: password })
+        body: JSON.stringify({ username: sanitizedUserId, email: email, password: password })
       });
 
       const output = await response.json();
@@ -31,13 +38,13 @@ const RegisterUser = () => {
         console.log("User registered successfully");
 
         // Step 2: Create a graph for the new user using Pixela API
-        const graphResponse = await createGraph(userid);
+        const graphResponse = await createGraph(sanitizedUserId);
         if (graphResponse.ok) {
           console.log("Graph created successfully");
           setError(null);
-
+          
           // Redirect to the user's profile after successful registration and graph creation
-          navigate("/profile"); // Static route for the logged-in user's profile
+          navigate(`/profile/${sanitizedUserId}`); // Use sanitizedUserId in the profile route
         } else {
           setError("Failed to create graph for the user.");
         }
@@ -52,8 +59,8 @@ const RegisterUser = () => {
 
   // Function to create a graph using Pixela API
   const createGraph = async (userId) => {
-    const token = "YOUR_PIXELA_TOKEN"; // Replace with your Pixela user token
-    const graphUser = "YOUR_PIXELA_USERNAME"; // Replace with Pixela username
+    const token = "tokensecret"; // Your Pixela token (shared for all users)
+    const graphUser = "graphuser"; // Your Pixela username (shared for all users)
 
     return await fetch(`https://pixe.la/v1/users/${graphUser}/graphs`, {
       method: "POST",
@@ -62,7 +69,7 @@ const RegisterUser = () => {
         "X-USER-TOKEN": token
       },
       body: JSON.stringify({
-        id: userId, // Use userid as the graph ID
+        id: userId, // Use sanitized userId as the graph ID
         name: "User Activity Graph",
         unit: "commit",
         type: "int",
@@ -77,11 +84,23 @@ const RegisterUser = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={submitHandler} className="reg-form">
         <label>User Id</label><br />
-        <input type='text' name='userid' onChange={(event) => setUserid(event.target.value)} /><br /><br />
+        <input 
+          type='text' 
+          name='userid' 
+          onChange={(event) => setUserid(event.target.value)} 
+        /><br /><br />
         <label>Email</label><br />
-        <input type='text' name='email' onChange={(event) => setEmail(event.target.value)} /><br /><br />
+        <input 
+          type='text' 
+          name='email' 
+          onChange={(event) => setEmail(event.target.value)} 
+        /><br /><br />
         <label>Password</label><br />
-        <input type='password' name='password' onChange={(event) => setPassword(event.target.value)} /><br /><br />
+        <input 
+          type='password' 
+          name='password' 
+          onChange={(event) => setPassword(event.target.value)} 
+        /><br /><br />
         <input type='submit' value="Submit" className="login-btn" />
       </form>
       <hr />
