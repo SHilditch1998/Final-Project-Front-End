@@ -6,6 +6,7 @@ const HabitTracker = () => {
   const [date, setDate] = useState('');
   const [quantity, setQuantity] = useState('');
   const [responseMsg, setResponseMsg] = useState('');
+  const [updateCount, setUpdateCount] = useState(0);
 
   const username = 'graphuser';  // Username for the generic account
   const graphID = 'graph0001';   // Graph ID for the specific graph
@@ -34,7 +35,7 @@ const HabitTracker = () => {
     };
 
     fetchGraphData();
-  }, [username, graphID]);
+  }, [username, graphID, updateCount]);
 
   const handleAddOrUpdateTask = async () => {
     try {
@@ -47,6 +48,7 @@ const HabitTracker = () => {
         },
         body: JSON.stringify({
           quantity: quantity.toString(),
+          thanksCode:"639becb61a3bd96d9f521acfca7310eba71e465253e685d13c7be213fa5fa940"
         }),
       });
 
@@ -56,6 +58,7 @@ const HabitTracker = () => {
       } else {
         setResponseMsg(data.message || 'Failed to add/update task');
       }
+      setUpdateCount(updateCount+1);
     } catch (error) {
       console.error('Error:', error);
       setResponseMsg('Error adding/updating task');
