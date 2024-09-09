@@ -1,53 +1,87 @@
-const submitHandler = async (event) => {
-  event.preventDefault();
-  const token = readcookie("jwt_token");
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import readcookie from "../../utils/readcookie";
 
-  try {
-    // Step 1: Delete the user account
-    const response = await fetch("http://localhost:5003/Account/DeleteDuckling", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
+const DeleteUser = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
-    // Attempt to read the response as JSON
-    let output;
+  const submitHandler = async (event) => {
+    event.preventDefault();
+    const token = readcookie("jwt_token");
+
     try {
-      output = await response.json();
-    } catch (error) {
-      console.error("Failed to parse JSON:", error);
-      output = { message: "Invalid response from the server" };
-    }
+      // Step 1: Delete the user account
+      const response = await fetch("http://localhost:5003/Account/DeleteDuckling", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
 
-    if (response.ok) {
-      setMessage("User deleted successfully!");
-
-      // Step 2: Delete the corresponding Pixela graph
-      const deleteGraphResponse = await deleteGraph(output.userId);
-      if (deleteGraphResponse.ok) {
-        setMessage("User and graph deleted successfully!");
-      } else {
-        setMessage("User deleted, but failed to delete the graph.");
+      // Attempt to read the response as JSON
+      let output;
+      try {
+        output = await response.json();
+      } catch (error) {
+        console.error("Failed to parse JSON:", error);
+        output = { message: "Invalid response from the server" };
       }
 
-      // Step 3: Log out the user by clearing the token and redirecting after a delay
-      eraseCookie("jwt_token"); // Clear the token from the cookies
+      if (response.ok) {
+        setMessage("User deleted successfully!");
 
-      // Delay before redirecting
-      setTimeout(() => {
-        navigate("/login"); // Redirect to login page or home
-      }, 3000);
+        // Step 2: Delete the corresponding Pixela graph
+        const deleteGraphResponse = await deleteGraph(output.userId);
+        if (deleteGraphResponse.ok) {
+          setMessage("User and graph deleted successfully!");
+        } else {
+          setMessage("User deleted, but failed to delete the graph.");
+        }
 
-    } else {
-      setMessage(`Error: ${output.message || 'Failed to delete user.'}`);
+        // Step 3: Log out the user by clearing the token and redirecting after a delay
+        eraseCookie("jwt_token"); // Clear the token from the cookies
+
+        // Delay before redirecting
+        setTimeout(() => {
+          navigate("/login"); // Redirect to login page or home
+        }, 3000);
+
+      } else {
+        setMessage(`Error: ${output.message || 'Failed to delete user.'}`);
+      }
+    } catch (error) {
+      setMessage(`Error: ${error.message}`);
     }
-  } catch (error) {
-    setMessage(`Error: ${error.message}`);
-  }
+  };
+
+  return (
+    <form onSubmit={submitHandler}>
+      <input 
+        type="email" 
+        value={email} 
+        onChange={(e) => setEmail(e.target.value)} 
+        placeholder="Email" 
+        required 
+      />
+      <input 
+        type="password" 
+        value={password} 
+        onChange={(e) => setPassword(e.target.value)} 
+        placeholder="Password" 
+        required 
+      />
+      <button type="submit">Delete Account</button>
+      {message && <p>{message}</p>}
+    </form>
+  );
 };
+
+export default DeleteUser;

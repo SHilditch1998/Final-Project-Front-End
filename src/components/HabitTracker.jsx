@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react';
+import HabitModal from './HabitModal';
 
 const HabitTracker = () => {
   const [graphData, setGraphData] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
-  const [date, setDate] = useState('');
-  const [quantity, setQuantity] = useState('');
   const [responseMsg, setResponseMsg] = useState('');
   const [updateCount, setUpdateCount] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalDate, setModalDate] = useState('');
+  const [modalQuantity, setModalQuantity] = useState('');
+  const [allHabits, setAllHabits] = useState([]);
+  const [selectedHabit, setSelectedHabit] = useState(null);
 
-  const username = 'graphuser';  // Username for the generic account
-  const graphID = 'graph0001';   // Graph ID for the specific graph
-  const token = 'tokensecret';   // Token for the generic account
+  const username = 'graphuser';
+  const graphID = 'graph0001';
+  const token = 'tokensecret';
 
   useEffect(() => {
     const fetchGraphData = async () => {
@@ -34,49 +38,108 @@ const HabitTracker = () => {
       }
     };
 
+    const fetchAllHabits = async () => {
+      try {
+        const response = await fetch("http://localhost:5003/Habits/List", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Error fetching habits");
+        }
+
+        const data = await response.json();
+        setAllHabits(data.AllHabits);
+      } catch (error) {
+        console.error(error.message);
+        setErrorMsg("Error fetching habits");
+      }
+    };
+
     fetchGraphData();
+    fetchAllHabits();
   }, [username, graphID, updateCount]);
 
-  const handleAddOrUpdateTask = async () => {
+  const handleAddOrUpdateTask = async (date, quantity) => {
     try {
+      // Format the date for API request
       const formattedDate = date.replace(/-/g, '');
-      const response = await fetch(`https://pixe.la/v1/users/${username}/graphs/${graphID}/${formattedDate}`, {
-        method: 'PUT',  // 'POST' for creating, 'PUT' for updating
+      const response = await fetch("http://localhost:5003/Habits/Create", {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-USER-TOKEN': token,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
-          quantity: quantity.toString(),
-          thanksCode:"639becb61a3bd96d9f521acfca7310eba71e465253e685d13c7be213fa5fa940"
+          title: formattedDate,
+          color: 'blue', // You might need to adjust this based on your requirements
+          completed: false, // Initial value for new habits
         }),
       });
 
-      const data = await response.json();
       if (response.ok) {
-        setResponseMsg('Task added/updated successfully');
+        const data = await response.json();
+        setResponseMsg('Task added successfully');
+        setUpdateCount(updateCount + 1);
+        setIsModalOpen(false);
       } else {
-        setResponseMsg(data.message || 'Failed to add/update task');
+        const data = await response.json();
+        setResponseMsg(data.error || 'Failed to add task');
       }
-      setUpdateCount(updateCount+1);
     } catch (error) {
       console.error('Error:', error);
-      setResponseMsg('Error adding/updating task');
+      setResponseMsg('Error adding task');
+    }
+  };
+
+  const handleCompleteTask = async (title) => {
+    try {
+      const response = await fetch("http://localhost:5003/Habits/Complete", {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          title: title,
+          completed: true
+        }),
+      });
+
+      if (response.ok) {
+        setResponseMsg('Task marked as completed');
+        setUpdateCount(updateCount + 1);
+      } else {
+        const data = await response.json();
+        setResponseMsg(data.message || 'Failed to complete task');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setResponseMsg('Error completing task');
     }
   };
 
   const handleDeleteTask = async () => {
     try {
-      const formattedDate = date.replace(/-/g, '');
-      const response = await fetch(`https://pixe.la/v1/users/${username}/graphs/${graphID}/${formattedDate}`, {
+      const response = await fetch("http://localhost:5003/Habits/Delete", {
         method: 'DELETE',
         headers: {
-          'X-USER-TOKEN': token,
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
+        body: JSON.stringify({
+          HabitId: selectedHabit.HabitId,
+          title: selectedHabit.title
+        }),
       });
 
       if (response.ok) {
         setResponseMsg('Task deleted successfully');
+        setUpdateCount(updateCount + 1);
       } else {
         const data = await response.json();
         setResponseMsg(data.message || 'Failed to delete task');
@@ -116,21 +179,7 @@ const HabitTracker = () => {
 
       <div className="tasks">
         <h4>Add/Update Task</h4>
-        <input
-          className="task-input"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          placeholder="Enter Date (yyyy-MM-dd)"
-        />
-        <input
-          className="task-input"
-          type="number"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-          placeholder="Enter Quantity"
-        />
-        <button className="taskbutton" onClick={handleAddOrUpdateTask}>Add/Update Task</button>
+        <button className="taskbutton" onClick={() => setIsModalOpen(true)}>Open Modal</button>
       </div>
 
       <div>
@@ -138,8 +187,8 @@ const HabitTracker = () => {
         <input
           className="task-input"
           type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          value={modalDate}
+          onChange={(e) => setModalDate(e.target.value)}
           placeholder="Enter Date (yyyy-MM-dd)"
         />
         <button className="taskbutton" onClick={handleDeleteTask}>Delete Task</button>
@@ -148,6 +197,16 @@ const HabitTracker = () => {
       {responseMsg && (
         <p style={responseMessageStyle}>{responseMsg}</p>
       )}
+
+      <HabitModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={(date, quantity) => {
+          handleAddOrUpdateTask(date, quantity);
+          setModalDate(date);
+          setModalQuantity(quantity);
+        }}
+      />
     </div>
   );
 };
