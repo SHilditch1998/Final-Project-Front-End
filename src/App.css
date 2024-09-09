@@ -224,33 +224,104 @@
   justify-content: center;
 }
 
+/* src/components/Habits/TaskListModal.css */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .modal-content {
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 300px;
-  max-width: 100%;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
 }
 
-.modal-content input {
-  display: block;
-  margin-bottom: 10px;
-  width: 100%;
-  background-color: #ffffff;
-  color: black;
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.task-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-item {
+  border-bottom: 1px solid #00ffc8;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-item:last-child {
+  border-bottom: none;
 }
 
 .modal-content button {
   margin-right: 10px;
-  padding: 10px 20px;
-  border: none;
-  background-color: #ffbf00;
+}
+
+.modal-content button:last-child {
+  margin-right: 0;
+}
+
+button {
+  background: #ffbf00;
   color: rgb(0, 0, 0);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
   font-weight: bold;
+}
+
+button:hover {
+  background: #ffd65d;
+}
+
+button.close {
+  background: #ff4d4d;
+  color: white;
+}
+
+button.close:hover {
+  background: #e60000;
+}
+
+.delete-confirmation {
+  background-color: rgba(255, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.delete-confirmation p {
+  font-size: 1.2rem;
+  color: red;
+}
+
+.delete-confirmation button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.modal-content button:hover {
-  background-color: #ffd65d;
+.delete-confirmation button:hover {
+  background-color: #e60000;
 }

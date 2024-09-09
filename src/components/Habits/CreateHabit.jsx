@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 const CreateHabit = ({ onCreate }) => {
   const [title, setTitle] = useState('');
-  const [color, setColor] = useState('blue'); // Default color
+  const [color, setColor] = useState('Add your description here'); // Set as color
   const [completed, setCompleted] = useState(false);
 
   const handleSubmit = (e) => {

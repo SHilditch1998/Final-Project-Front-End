@@ -1,9 +1,11 @@
+// src/components/Habits/HabitTracker.jsx
 import React, { useState, useEffect } from 'react';
 import CreateHabit from './CreateHabit';
 import UpdateHabit from './UpdateHabit';
 import DeleteHabit from './DeleteHabit';
 import ListHabits from './ListHabits';
 import HabitModal from './HabitModal';
+import TaskListModal from './TaskListModal'; // Import the Task List Modal component
 
 const HabitTracker = () => {
   const [graphData, setGraphData] = useState(null);
@@ -13,6 +15,7 @@ const HabitTracker = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isTaskListModalOpen, setIsTaskListModalOpen] = useState(false); // New state for Task List Modal
   const [allHabits, setAllHabits] = useState([]);
   const [selectedHabit, setSelectedHabit] = useState(null);
 
@@ -201,6 +204,10 @@ const HabitTracker = () => {
     color: 'red'
   };
 
+  const toggleTaskListModal = () => {
+    setIsTaskListModalOpen(!isTaskListModalOpen);
+  };
+
   return (
     <div className="data-box light-box">
       <h3>Your Habits</h3>
@@ -215,13 +222,14 @@ const HabitTracker = () => {
           <p>No Graph Data Available</p>
         )
       )}
-
       <div className="tasks">
-        <h4>Add New Habit</h4>
-        <button onClick={() => setIsCreateModalOpen(true)}>Open Create Habit Modal</button>
+        <button onClick={toggleTaskListModal}>Your Habits</button>
+        <button onClick={() => setIsCreateModalOpen(true)}>New Task</button>
       </div>
 
-      <ListHabits
+      <TaskListModal
+        isOpen={isTaskListModalOpen}
+        onClose={toggleTaskListModal}
         habits={allHabits}
         onEdit={(habit) => {
           setSelectedHabit(habit);
