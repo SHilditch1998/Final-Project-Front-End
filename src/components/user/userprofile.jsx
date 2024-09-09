@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import readcookie from "../../utils/readcookie";
-import HabitTracker from "../HabitTracker";
+import HabitTracker from "../Habits/HabitTracker";
 import '../../App.css';
 import '../../index.css';
 

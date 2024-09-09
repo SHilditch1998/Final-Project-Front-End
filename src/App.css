@@ -236,8 +236,21 @@
   display: block;
   margin-bottom: 10px;
   width: 100%;
+  background-color: #ffffff;
+  color: black;
 }
 
 .modal-content button {
   margin-right: 10px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffbf00;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background-color: #ffd65d;
 }
