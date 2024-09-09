@@ -1,38 +1,34 @@
 import React, { useState } from 'react';
 import TaskListModal from './TaskListModal';
-import '../user/userprofile'
-import './HabitModal'
-import './ListHabits'
-import './ParentComponent'
-import './TaskListModal'
-import './UpdateHabit'
 
-const HabitTracker = ({ onDelete }) => {
+const ParentComponent = () => {
   const [habits, setHabits] = useState([
     { HabitId: 1, title: 'Exercise', completed: false },
     { HabitId: 2, title: 'Meditation', completed: false },
   ]);
 
-  const handleEdit = (habit) => {
+  const handleDelete = (habitToDelete) => {
+    setHabits(habits.filter((habit) => habit.HabitId !== habitToDelete.HabitId));
+  };
+
+  const handleEdit = (habitToEdit) => {
     // Edit logic here
   };
 
-  const handleComplete = (habit) => {
+  const handleComplete = (habitToComplete) => {
     // Complete logic here
   };
 
   return (
     <div>
-      {/* Add some text to see if the component is rendering */}
-      <h2>Habit Tracker</h2>
       <TaskListModal
         habits={habits}
         onEdit={handleEdit}
         onComplete={handleComplete}
-        onDelete={onDelete}
+        onDelete={handleDelete} // Make sure this is passed
       />
     </div>
   );
 };
 
-export default HabitTracker;
+export default ParentComponent;

@@ -1,19 +1,41 @@
-// src/components/Habits/CreateHabit.jsx
 import React, { useState } from 'react';
 
 const CreateHabit = ({ onCreate }) => {
   const [title, setTitle] = useState('');
-  const [color, setColor] = useState('Add your description here'); // Set as color
+  const [color, setColor] = useState('blue');
   const [completed, setCompleted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (title.trim()) {
-      onCreate({ title, color, completed });
+      const newHabit = { title, color, completed };
+      onCreate(newHabit);
+
+      // Send task creation to Pixela (if needed)
+      await updateGraph('create', newHabit);
       setTitle('');
       setColor('blue');
       setCompleted(false);
     }
+  };
+
+  const updateGraph = async (action, habit) => {
+    const token = "tokensecret";
+    const graphUser = "graphuser"; // Adjust as necessary
+    const graphID = 'your-graph-id'; // This should be the user's graph ID
+
+    // Example for updating graph when a habit is created
+    await fetch(`https://pixe.la/v1/users/${graphUser}/graphs/${graphID}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-USER-TOKEN": token,
+      },
+      body: JSON.stringify({
+        date: new Date().toISOString().split('T')[0], // Date in YYYYMMDD format
+        quantity: 1,
+      }),
+    });
   };
 
   return (

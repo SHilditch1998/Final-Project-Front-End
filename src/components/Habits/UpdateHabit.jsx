@@ -1,4 +1,3 @@
-// src/components/Habits/UpdateHabit.jsx
 import React, { useState, useEffect } from 'react';
 
 const UpdateHabit = ({ habit, onUpdate }) => {
@@ -12,11 +11,34 @@ const UpdateHabit = ({ habit, onUpdate }) => {
     setCompleted(habit.completed);
   }, [habit]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (title.trim()) {
-      onUpdate({ ...habit, title, color, completed });
+      const updatedHabit = { ...habit, title, color, completed };
+      onUpdate(updatedHabit);
+
+      // Send update to Pixela
+      await updateGraph('update', updatedHabit);
     }
+  };
+
+  const updateGraph = async (action, habit) => {
+    const token = "tokensecret";
+    const graphUser = "graphuser";
+    const graphID = 'your-graph-id';
+
+    // Example for updating graph when a habit is updated
+    await fetch(`https://pixe.la/v1/users/${graphUser}/graphs/${graphID}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-USER-TOKEN": token,
+      },
+      body: JSON.stringify({
+        date: new Date().toISOString().split('T')[0],
+        quantity: habit.completed ? 1 : 0,
+      }),
+    });
   };
 
   return (

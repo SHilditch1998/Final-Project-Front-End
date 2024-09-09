@@ -1,10 +1,35 @@
 import React from 'react';
 
 const DeleteHabit = ({ habit, onDelete, onCancel }) => {
+  const handleDelete = async () => {
+    onDelete(habit);
+
+    // Send delete request to Pixela (if needed)
+    await updateGraph('delete', habit);
+  };
+
+  const updateGraph = async (action, habit) => {
+    const token = "tokensecret";
+    const graphUser = "graphuser";
+    const graphID = 'your-graph-id';
+
+    // Example for updating graph when a habit is deleted
+    await fetch(`https://pixe.la/v1/users/${graphUser}/graphs/${graphID}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-USER-TOKEN": token,
+      },
+      body: JSON.stringify({
+        date: new Date().toISOString().split('T')[0],
+      }),
+    });
+  };
+
   return (
     <div className="delete-confirmation">
-      <p>Are you sure you want to delete "{habit.title}"? You might dissapoint the duck.</p>
-      <button onClick={() => onDelete(habit)}>Yes, Delete</button>
+      <p>Are you sure you want to delete "{habit.title}"?</p>
+      <button onClick={handleDelete}>Yes, Delete</button>
       <button onClick={onCancel}>Cancel</button>
     </div>
   );

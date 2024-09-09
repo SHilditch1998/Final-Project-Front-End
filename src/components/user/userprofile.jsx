@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import readcookie from "../../utils/readcookie";
 import HabitTracker from "../Habits/HabitTracker";
 import '../../App.css';
 import '../../index.css';
-
 
 const UserProfile = () => {
   const [error, setError] = useState(null);
@@ -55,6 +54,11 @@ const UserProfile = () => {
     }, 2000);
   };
 
+
+  const handleDelete = (habitToDelete) => {
+    console.log("Deleting habit:", habitToDelete);
+  };
+
   return (
     <div>
       {error && <p className="error-message">{error}</p>}
@@ -89,7 +93,7 @@ const UserProfile = () => {
         </div>
 
         <div className="user-data">
-          <HabitTracker />
+          <HabitTracker onDelete={handleDelete} />
         </div>
       </div>
     </div>

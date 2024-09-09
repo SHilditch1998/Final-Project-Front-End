@@ -5,16 +5,18 @@ const ListHabits = ({ habits, onEdit, onComplete, onDelete }) => {
   const [selectedHabit, setSelectedHabit] = useState(null);
 
   const handleDelete = (habit) => {
-    setSelectedHabit(habit); // Opens confirmation modal or similar UI for deletion
+    setSelectedHabit(habit); // Opens the confirmation modal
   };
 
   const confirmDelete = (habit) => {
-    onDelete(habit); // Calls the actual delete function passed from parent
-    setSelectedHabit(null); // Close confirmation modal
+    if (onDelete) {
+      onDelete(habit); // Pass the habit to delete up the chain
+    }
+    setSelectedHabit(null); // Close modal
   };
 
   const cancelDelete = () => {
-    setSelectedHabit(null); // Close confirmation modal without deleting
+    setSelectedHabit(null); // Close modal without deleting
   };
 
   return (
@@ -32,7 +34,6 @@ const ListHabits = ({ habits, onEdit, onComplete, onDelete }) => {
         ))}
       </ul>
 
-      {/* Conditionally render the DeleteHabit component for confirmation */}
       {selectedHabit && (
         <DeleteHabit
           habit={selectedHabit}

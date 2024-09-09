@@ -1,7 +1,7 @@
 import React from 'react';
 import ListHabits from './ListHabits';
 
-const TaskListModal = ({ isOpen, onClose, habits, onEdit, onComplete }) => {
+const TaskListModal = ({ isOpen, onClose, habits, onEdit, onComplete, onDelete }) => {
   if (!isOpen) return null;
 
   return (
@@ -12,6 +12,7 @@ const TaskListModal = ({ isOpen, onClose, habits, onEdit, onComplete }) => {
           habits={habits}
           onEdit={onEdit}
           onComplete={onComplete}
+          onDelete={onDelete} // Pass onDelete here
         />
         <button onClick={onClose}>Close</button>
       </div>
