@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+
 const Register = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -29,18 +30,20 @@ const Register = () => {
         throw new Error('Registration failed');
       }
 
-      // Handle success response
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="email" name="email" onChange={handleChange} required />
-      <input type="password" name="password" onChange={handleChange} required />
-      <button type="submit">Register</button>
-    </form>
+    <div className="reg-container">
+      <h1 className="Reg-title">Register</h1>
+      <form className="reg-form" onSubmit={handleSubmit}>
+        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+        <button className="reg-btn" type="submit">Confirm</button>
+      </form>
+    </div>
   );
 };
 
