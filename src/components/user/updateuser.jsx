@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import writecookie from '../../utils/writecookie';
+import readcookie from '../../utils/readcookie';
 
 const UpdateUser = () => {
   const [email, setEmail] = useState("");
@@ -17,7 +16,7 @@ const UpdateUser = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`, // Corrected template literal
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           email: email,
@@ -30,27 +29,27 @@ const UpdateUser = () => {
       if (response.ok) {
         setMessage("User updated successfully!");
       } else {
-        setMessage(`Error: ${output.message || 'Failed to update user.'}`); // Corrected error message
+        setMessage(`Error: ${output.message || 'Failed to update user.'}`);
       }
     } catch (error) {
-      setMessage(`Error: ${error.message}`); // Corrected error message
+      setMessage(`Error: ${error.message}`);
     }
   };
 
   return (
-    <div>
+    <div className="update-container">
       <h1>Update User</h1>
-      <form onSubmit={submitHandler}>
+      <form onSubmit={submitHandler} className="update-form">
         <label>Email</label><br />
-        <input type='text' name='email' onChange={(event) => setEmail(event.target.value)} /><br /><br />
+        <input type="text" name="email" onChange={(event) => setEmail(event.target.value)} /><br /><br />
         
         <label>Old Password</label><br />
-        <input type='password' name='oldPassword' onChange={(event) => setOldPassword(event.target.value)} /><br /><br />
+        <input type="password" name="oldPassword" onChange={(event) => setOldPassword(event.target.value)} /><br /><br />
         
         <label>New Password</label><br />
-        <input type='password' name='newPassword' onChange={(event) => setNewPassword(event.target.value)} /><br /><br />
+        <input type="password" name="newPassword" onChange={(event) => setNewPassword(event.target.value)} /><br /><br />
 
-        <input type='submit' value="Submit" />
+        <input type="submit" value="Submit" className="update-btn" />
       </form>
       <p>{message}</p>
       <hr />

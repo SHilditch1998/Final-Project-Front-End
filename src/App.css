@@ -166,3 +166,45 @@
   font-weight: bold;
   color: red;
 }
+
+.update-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  padding-top: 50px; 
+  font-family: sans-serif;
+}
+
+.update-form {
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 80px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.update-btn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffbf00;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.update-btn:hover {
+  background-color: #00ff0d7a;
+}
+
+.update-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
