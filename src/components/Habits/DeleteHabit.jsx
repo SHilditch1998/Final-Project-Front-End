@@ -29,8 +29,10 @@ const DeleteHabit = ({ habit, onDelete, onCancel }) => {
   return (
     <div className="delete-confirmation">
       <p>Are you sure you want to delete "{habit.title}"?</p>
-      <button onClick={handleDelete}>Yes, Delete</button>
-      <button onClick={onCancel}>Cancel</button>
+      <div>
+        <button className="taskbutton" onClick={handleDelete}>Yes, Delete</button>
+        <button className="taskbutton close" onClick={onCancel}>Cancel</button>
+      </div>
     </div>
   );
 };

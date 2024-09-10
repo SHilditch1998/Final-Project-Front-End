@@ -10,7 +10,6 @@ const UserProfile = () => {
   const [username, setUsername] = useState('');
   const [avatar, setAvatar] = useState('');
   const [status, setStatus] = useState(0);
-  const [userID, setUserID] = useState('');
   const [gifSrc, setGifSrc] = useState("ducky.gif");
 
   useEffect(() => {
@@ -20,31 +19,39 @@ const UserProfile = () => {
         setError("You must be logged in to view this page.");
         return;
       }
-
-      const response = await fetch("http://localhost:5003/Friends/List", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-      });
-
-      const output = await response.json();
-      console.log('API Output:', output);
-
-      if (response.ok) {
-        setUsername(output.username);
-        setAvatar(output.avatar);
-        setStatus(output.status);
-        setUserID(output.userID);
-        setError(null);
-      } else {
-        setError(output.message || "Failed to fetch user data.");
+  
+      try {
+        const response = await fetch("http://localhost:5003/Friends/List", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+  
+        const output = await response.json();
+        console.log('API Output:', output);
+        const output2 = output.ListAccounts[2]
+        if (response.ok) {
+          console.log(output);
+          
+          const fetchedUsername = output2.username || 'Username not found';
+          setUsername(fetchedUsername);
+          setAvatar(output2.avatar || '');
+          setStatus(output2.status || 0);
+          setError(null);
+        } else {
+          setError(output2.message || "Failed to fetch user data.");
+        }
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+        setError("There was an error fetching the user data.");
       }
     };
-
+  
     fetchUserData();
   }, []);
+    
 
   const handleGifClick = () => {
     setGifSrc("heart.gif");
@@ -54,11 +61,6 @@ const UserProfile = () => {
     }, 2000);
   };
 
-
-  const handleDelete = (habitToDelete) => {
-    console.log("Deleting habit:", habitToDelete);
-  };
-
   return (
     <div>
       {error && <p className="error-message">{error}</p>}
@@ -66,11 +68,6 @@ const UserProfile = () => {
         <div className="user-info">
           <div className="avatar-box light-box">
             <h1>{username}</h1>
-            {userID ? (
-              <p className="user-id-error">{userID}</p>
-            ) : (
-              <p className="user-id-error">User ID Not Available</p>
-            )}
             {avatar && <img src={avatar} alt="User Avatar" width="100" />}
             <div>
               <img
@@ -93,7 +90,8 @@ const UserProfile = () => {
         </div>
 
         <div className="user-data">
-          <HabitTracker onDelete={handleDelete} />
+          {/* Pass username as prop to HabitTracker */}
+          <HabitTracker username={username} />
         </div>
       </div>
     </div>

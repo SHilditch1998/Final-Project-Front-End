@@ -1,21 +1,54 @@
-import React from 'react';
-import ListHabits from './ListHabits';
+import React, { useState } from 'react';
 
-const TaskListModal = ({ isOpen, onClose, habits, onEdit, onComplete, onDelete }) => {
-  if (!isOpen) return null;
+const TaskListModal = ({ habits, onEdit, onComplete, onDelete }) => {
+  const [editMode, setEditMode] = useState(null); // Track the habit being edited
+  const [newTitle, setNewTitle] = useState('');
+
+  const handleEditClick = (habit) => {
+    setEditMode(habit.HabitId);
+    setNewTitle(habit.title); // Pre-fill input with existing title
+  };
+
+  const handleSaveEdit = (habitId) => {
+    onEdit(habitId, newTitle);
+    setEditMode(null); // Exit edit mode after saving
+  };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>Task List</h2>
-        <ListHabits
-          habits={habits}
-          onEdit={onEdit}
-          onComplete={onComplete}
-          onDelete={onDelete} // Pass onDelete here
-        />
-        <button onClick={onClose}>Close</button>
-      </div>
+    <div>
+      <ul>
+        {habits.map((habit) => (
+          <li key={habit.HabitId}>
+            {/* If in edit mode, show an input to edit the habit */}
+            {editMode === habit.HabitId ? (
+              <input
+                type="text"
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+              />
+            ) : (
+              <span style={{ textDecoration: habit.completed ? 'line-through' : 'none' }}>
+                {habit.title}
+              </span>
+            )}
+
+            {/* Edit/Save Button */}
+            {editMode === habit.HabitId ? (
+              <button onClick={() => handleSaveEdit(habit.HabitId)}>Save</button>
+            ) : (
+              <button onClick={() => handleEditClick(habit)}>Edit</button>
+            )}
+
+            {/* Complete Button */}
+            <button onClick={() => onComplete(habit.HabitId)}>
+              {habit.completed ? 'Undo' : 'Complete'}
+            </button>
+
+            {/* Delete Button */}
+            <button onClick={() => onDelete(habit.HabitId)}>Delete</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
