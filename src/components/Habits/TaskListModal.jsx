@@ -77,6 +77,7 @@ const TaskListModal = ({ habits, setHabits, onEdit, onComplete, graphID  }) => {
           type="text"
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
+          className="edit-input"
         />
       ) : (
         <span style={{ textDecoration: habit.completed ? 'line-through' : 'none' }}>
