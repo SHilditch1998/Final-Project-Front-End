@@ -12,7 +12,10 @@ const DeleteHabit = ({ habit, onDelete, onCancel }) => {
 
   return (
     <div className="delete-confirmation">
-      <p>Are you sure you want to delete "{habit.title}"? Just know that this task will stay on your graph as a reminder.</p>
+      <p>
+        Are you sure you want to delete "{habit.title}"? <br></br><br></br>
+        <span className="bold-text"> Just know that this task will stay on your graph as a reminder.</span>
+      </p>
       <div>
         <button className="taskbutton" onClick={handleDelete}>Yes, Delete</button>
         <button className="taskbutton close" onClick={onCancel}>Cancel</button>
