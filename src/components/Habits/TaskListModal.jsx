@@ -14,6 +14,34 @@ const TaskListModal = ({ habits, onEdit, onComplete, onDelete }) => {
     setEditMode(null); // Exit edit mode after saving
   };
 
+
+  const handleCompleteHabit = async (habitId) => {
+    if (!jwtToken) {
+      console.error("User not authenticated");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:5003/Habit/completed/${habitId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwtToken}`,
+        },
+      });
+  
+      if (response.ok) {
+        onHabitCompleted(habitId); // Notify parent of the completion
+        console.log(`Habit ${habitId} successfully completed.`);
+      } else {
+        console.error(`Failed to complete habit ${habitId}`);
+      }
+    } catch (error) {
+      console.error("Error occurred while completing habit:", error);
+    }
+  };
+
+
   return (
     <div>
       <ul>
@@ -51,6 +79,8 @@ const TaskListModal = ({ habits, onEdit, onComplete, onDelete }) => {
         ))}
       </ul>
     </div>
+
+    
   );
 };
 

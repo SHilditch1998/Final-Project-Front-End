@@ -38,7 +38,6 @@ const UserProfile = () => {
       const sanitizedUsername = username.toLowerCase().replace(/[^a-z0-9]/g, '');
 
       if (response.ok) {
-        // const fetchedUsername = outputData.username || 'Username not found'; 
         setUsername(username);
         setGraphName(sanitizedUsername)
         setAvatar(outputData.avatar || '');

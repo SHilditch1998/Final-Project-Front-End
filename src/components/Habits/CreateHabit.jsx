@@ -3,7 +3,6 @@ import readcookie from '../../utils/readcookie';
 
 const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
   const [habitTitle, setHabitTitle] = useState('');
-  const [habitDescription, setHabitDescription] = useState('');
   const [error, setError] = useState(null);
 
   const pixelaUser = 'graphuser';  // Fixed Pixe.la user
@@ -17,8 +16,7 @@ const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
     }
 
     const newHabit = {
-      title: habitTitle,
-      description: habitDescription,
+      title: habitTitle
     };
 
     try {
@@ -79,15 +77,9 @@ const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
       <input
         className="task-input"
         type="text"
-        placeholder="Habit Title"
+        placeholder="Habit"
         value={habitTitle}
         onChange={(e) => setHabitTitle(e.target.value)}
-      />
-      <textarea
-        className="task-input"
-        placeholder="Habit Description"
-        value={habitDescription}
-        onChange={(e) => setHabitDescription(e.target.value)}
       />
       
       <button className="taskbutton" onClick={handleCreateHabit}>

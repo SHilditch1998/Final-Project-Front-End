@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CreateHabit from './CreateHabit'; 
+import DeleteHabit from './DeleteHabit';
 import TaskListModal from './TaskListModal';
-import HabitModal from './HabitModal.jsx';
 import '../../App.css';
 import '../../index.css';
 import readcookie from '../../utils/readcookie';
@@ -73,20 +73,114 @@ const HabitTracker = ({ username, graphName }) => {
   const openTaskListModal = () => setIsTaskListModalOpen(true);
   const closeTaskListModal = () => setIsTaskListModalOpen(false);
 
-  const handleEditHabit = (habitId, newTitle) => {
-    // Logic to handle editing a habit
+  const handleEditHabit = async (habitId, newTitle) => {
     console.log(`Edit Habit: ${habitId}, New Title: ${newTitle}`);
+    
+    const jwtToken = readcookie("jwt_token");
+    if (!jwtToken) {
+      console.error("User not authenticated");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:5003/Habit/edit`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwtToken}`,
+        },
+        body: JSON.stringify({
+          HabitId: habitId,  // Sending HabitId in the request body
+          editiedHabit: newTitle // Sending the updated title in the request body (as per backend's field)
+        }),
+      });
+  
+      if (response.ok) {
+        // Update the habits state with the new title
+        setHabits((prevHabits) =>
+          prevHabits.map(habit =>
+            habit.id === habitId ? { ...habit, title: newTitle } : habit
+          )
+        );
+        console.log(`Habit ${habitId} successfully updated.`);
+      } else {
+        console.error(`Failed to update habit ${habitId}`);
+      }
+    } catch (error) {
+      console.error("Error occurred while updating habit:", error);
+    }
   };
+  
 
-  const handleCompleteHabit = (habitId) => {
-    // Logic to handle completing a habit
+  const handleCompleteHabit = async (habitId) => {
     console.log(`Complete Habit: ${habitId}`);
+    
+    const jwtToken = readcookie("jwt_token");
+    if (!jwtToken) {
+      console.error("User not authenticated");
+      return;
+    }
+  
+    try {
+      // Send request to update habit
+      const response = await fetch(`http://localhost:5003/Habit/completed/${habitId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwtToken}`,
+        },
+      });
+  
+      if (response.ok) {
+        setHabits((prevHabits) =>
+          prevHabits.map(habit =>
+            habit.id === habitId ? { ...habit, completed: true } : habit
+          )
+        );
+        console.log(`Habit ${habitId} successfully completed.`);
+      } else {
+        console.error(`Failed to complete habit ${habitId}`);
+      }
+    } catch (error) {
+      console.error("Error occurred while completing habit:", error);
+    }
   };
+  
 
-  const handleDeleteHabit = (habitId) => {
-    // Logic to handle deleting a habit
+  const handleDeleteHabit = async (habitId, habitTitle) => {
     console.log(`Delete Habit: ${habitId}`);
+  
+    const jwtToken = readcookie("jwt_token");
+    if (!jwtToken) {
+      console.error("User not authenticated");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:5003/Habit/remove`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwtToken}`,
+          'X-Habit-Id': habitId,   // Pass HabitId in headers
+          'X-Habit-Title': habitTitle   // Pass title in headers
+        },
+        // No body sent
+      });
+  
+      if (response.ok) {
+        // After successfully deleting the habit, update the state
+        setHabits((prevHabits) => prevHabits.filter(habit => habit.id !== habitId));
+        console.log(`Habit ${habitId} successfully deleted.`);
+      } else {
+        console.error(`Failed to delete habit ${habitId}`);
+      }
+    } catch (error) {
+      console.error("Error occurred while deleting habit:", error);
+    }
   };
+  
+
 
   return (
     <div className="habit-tracker">
@@ -112,19 +206,6 @@ const HabitTracker = ({ username, graphName }) => {
         Show Tasks
       </button>
 
-
-      {/* List Habits */}
-      <div className="habit-list">
-        {habits.length > 0 ? (
-          habits.map(habit => (
-            <div key={habit.id} className="habit-item">
-              <span>{habit.title}</span>
-            </div>
-          ))
-        ) : (
-          <p>No habits available.</p>
-        )}
-      </div>
 
       {/* Create Habit Modal */}
       {isCreateModalOpen && (
@@ -159,6 +240,8 @@ const HabitTracker = ({ username, graphName }) => {
           </div>
         </div>
       )}
+
+      
 
     </div>
   );
