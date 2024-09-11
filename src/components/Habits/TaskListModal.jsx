@@ -21,8 +21,6 @@ const TaskListModal = ({ habits, setHabits, onEdit, onComplete, graphID  }) => {
   };
 
   const handleSaveEdit = (habit, habitId) => {
-    console.log(newTitle);
-    
     onEdit(habitId, newTitle);  // Call the parent-provided onEdit function
     habit.title = newTitle;  // Update the local habit title
     setEditMode(false);  // Exit edit mode
@@ -61,8 +59,6 @@ const TaskListModal = ({ habits, setHabits, onEdit, onComplete, graphID  }) => {
         console.log(`Habit ${habitId} successfully deleted.`);
         setIsDeleteModalOpen(false);  // Close the modal
 
-        // Call the delete function for Pixela with graphID
-        await deleteHabitFromPixela(habit, graphID);
       } else {
         console.error(`Failed to delete habit ${habitId}`);
       }
@@ -113,7 +109,6 @@ const TaskListModal = ({ habits, setHabits, onEdit, onComplete, graphID  }) => {
           habit={selectedHabit}
           onDelete={handleDeleteHabit}
           onCancel={() => setIsDeleteModalOpen(false)}
-          graphID={graphID}  // Pass graphID to DeleteHabit
         />
       )}
     </div>

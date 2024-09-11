@@ -16,8 +16,6 @@ const HabitTracker = ({ username, graphName }) => {
 
   const pixelaUser = 'graphuser';  // The Pixe.la user (always 'graphuser')
   const graphID = graphName;  // Use username as the graph ID
-  console.log(username);
-  
   const token = 'tokensecret';  // Pixe.la user token (use the actual token)
 
   // Fetch habits from backend and graph from Pixe.la
@@ -75,8 +73,6 @@ const HabitTracker = ({ username, graphName }) => {
   const closeTaskListModal = () => setIsTaskListModalOpen(false);
 
   const handleEditHabit = async (habitId, newTitle) => {
-    console.log(`Edit Habit: ${habitId}, New Title: ${newTitle}`);
-    
     const jwtToken = readcookie("jwt_token");
     if (!jwtToken) {
       console.error("User not authenticated");
@@ -115,9 +111,7 @@ const HabitTracker = ({ username, graphName }) => {
   const handleCompleteHabit = async (habit) => {
     const habitId = habit.HabitId;
     const habitTitle = habit.title;
-  
-    console.log(`Complete Habit: ${habitId}, Title: ${habitTitle}`);
-  
+    
     const jwtToken = readcookie("jwt_token");
     if (!jwtToken) {
       console.error("User not authenticated");
@@ -155,9 +149,6 @@ const HabitTracker = ({ username, graphName }) => {
   
   
   const handleDeleteHabit = async (habit) => {
-    // Your delete logic here
-    console.log(`Delete Habit: ${habit.HabitId}`);
-    // Ensure readcookie is imported
     const jwtToken = readcookie("jwt_token");
   
     if (!jwtToken) {
@@ -218,11 +209,8 @@ const HabitTracker = ({ username, graphName }) => {
       {isCreateModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <CreateHabit
-              onClose={closeCreateModal}
-              onHabitCreated={setHabits}
-              graphID={graphID}  // Pass graphID (based on username) to CreateHabit
-            />
+          <CreateHabit onClose={closeCreateModal} onHabitCreated={setHabits} graphID={graphID} />
+
             <button className="taskbutton close" onClick={closeCreateModal}>
               X
             </button>

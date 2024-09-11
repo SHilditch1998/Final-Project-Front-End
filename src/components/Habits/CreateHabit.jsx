@@ -3,9 +3,9 @@ import readcookie from '../../utils/readcookie';
 
 const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
   const [habitTitle, setHabitTitle] = useState('');
-  const [habitDescription, setHabitDescription] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);  // Default to today's date
   const [error, setError] = useState(null);
+  const [selectedDate, setSelectedDate] = useState('');
 
   const pixelaUser = 'graphuser';  // Fixed Pixe.la user
   const token = 'tokensecret';  // Pixe.la API token
@@ -33,15 +33,11 @@ const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
       });
 
       if (response.ok) {
-        const createdHabit = await response.json();
-        onHabitCreated(prevHabits => [...prevHabits, createdHabit]);
-
-        // Add the habit to Pixe.la graph
-        await addHabitToPixela();
-        onClose();  // Close the modal after success
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Failed to create habit.");
+        // Call the addHabitToPixela function after creating the habit
+        addHabitToPixela(selectedDate);  // Make sure `selectedDate` is being passed correctly
+        const createdHabit = await response.json();  // Get the created habit from the response
+        onHabitCreated(prevHabits => [...prevHabits, createdHabit]);  // Update the state with the new habit
+        onClose();  // Close the modal after success;
       }
     } catch (error) {
       setError("Error occurred while creating habit.");
@@ -53,6 +49,7 @@ const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
     const token = 'tokensecret';  // Pixe.la API token
     const pixelaUser = 'graphuser';  // Fixed Pixe.la user
 
+  try {
     const response = await fetch(`https://pixe.la/v1/users/${pixelaUser}/graphs/${graphID}`, {
       method: 'POST',
       headers: {
@@ -64,11 +61,16 @@ const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
         quantity: '1',  // One pixel per habit
       }),
     });
-
+    
     if (!response.ok) {
-      console.error('Failed to update Pixe.la graph');
+      console.error('Failed to update Pixe.la graph:', responseData);
+    } else {
+      console.log('Successfully added pixel to Pixe.la');
     }
-  };
+  } catch (error) {
+    console.error('Error adding pixel to Pixe.la:', error);
+  }
+};
 
   return (
     <div className="create-habit-modal">
@@ -83,11 +85,7 @@ const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
         onChange={(e) => setHabitTitle(e.target.value)}
       />
       {/* Date Picker for Task Creation */}
-      <input
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-      />
+      <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
       
       <button className="taskbutton" onClick={handleCreateHabit}>
         Create Habit
