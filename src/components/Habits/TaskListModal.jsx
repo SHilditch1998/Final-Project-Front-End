@@ -44,10 +44,9 @@ const TaskListModal = ({ habits, onEdit, onComplete, onDelete }) => {
 
   return (
     <div>
-      <ul>
+      <ul className="listoftasks">
         {habits.map((habit) => (
           <li key={habit.HabitId}>
-            {/* If in edit mode, show an input to edit the habit */}
             {editMode === habit.HabitId ? (
               <input
                 type="text"
@@ -59,22 +58,23 @@ const TaskListModal = ({ habits, onEdit, onComplete, onDelete }) => {
                 {habit.title}
               </span>
             )}
-
+          <div class="habitbutton-container">
             {/* Edit/Save Button */}
             {editMode === habit.HabitId ? (
-              <button onClick={() => handleSaveEdit(habit.HabitId)}>Save</button>
+              <button className="habitbutton" onClick={() => handleSaveEdit(habit.HabitId)}>Save</button>
             ) : (
-              <button onClick={() => handleEditClick(habit)}>Edit</button>
+              <button className="habitbutton" onClick={() => handleEditClick(habit)}>Edit</button>
             )}
 
             {/* Complete Button */}
-            <button onClick={() => onComplete(habit.HabitId)}>
+            <button className="habitbutton" onClick={() => onComplete(habit.HabitId)}>
               {habit.completed ? 'Undo' : 'Complete'}
             </button>
             {/* Change to toggle box */}
 
             {/* Delete Button */}
-            <button onClick={() => onDelete(habit.HabitId)}>Delete</button>
+            <button className="habitbutton" onClick={() => onDelete(habit.HabitId)}>Delete</button>
+            </div>
           </li>
         ))}
       </ul>

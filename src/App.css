@@ -326,3 +326,20 @@ button.close:hover {
 .delete-confirmation button:hover {
   background-color: #e60000;
 }
+
+.listoftasks{
+  list-style-type: none;
+  margin-bottom: 5px;
+  font-size: 2rem;
+}
+
+.habitbutton-container {
+  display: flex; 
+  justify-content: space-around; 
+  gap: 10px; 
+  margin-bottom: 10px;
+}
+
+.habitbutton {
+  margin-bottom: 5px;
+}
