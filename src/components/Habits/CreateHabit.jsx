@@ -3,6 +3,8 @@ import readcookie from '../../utils/readcookie';
 
 const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
   const [habitTitle, setHabitTitle] = useState('');
+  const [habitDescription, setHabitDescription] = useState('');
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);  // Default to today's date
   const [error, setError] = useState(null);
 
   const pixelaUser = 'graphuser';  // Fixed Pixe.la user
@@ -32,7 +34,6 @@ const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
 
       if (response.ok) {
         const createdHabit = await response.json();
-        // Update the habit list in the parent component
         onHabitCreated(prevHabits => [...prevHabits, createdHabit]);
 
         // Add the habit to Pixe.la graph
@@ -47,11 +48,11 @@ const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
     }
   };
 
-  // Function to add a habit to the Pixe.la graph
-  console.log(graphID);
-  
-  const addHabitToPixela = async () => {
-    const date = new Date().toISOString().split('T')[0];  // YYYYMMDD format
+  const addHabitToPixela = async (selectedDate) => {
+    const formattedDate = selectedDate.replace(/-/g, "");  // Format date to YYYYMMDD
+    const token = 'tokensecret';  // Pixe.la API token
+    const pixelaUser = 'graphuser';  // Fixed Pixe.la user
+
     const response = await fetch(`https://pixe.la/v1/users/${pixelaUser}/graphs/${graphID}`, {
       method: 'POST',
       headers: {
@@ -59,8 +60,8 @@ const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
         'X-USER-TOKEN': token,
       },
       body: JSON.stringify({
-        date: date.replace(/-/g, ""),  // Pixe.la requires date in YYYYMMDD format
-        quantity: '1',  // For now, 1 pixel for each task
+        date: formattedDate,  // Send the selected date
+        quantity: '1',  // One pixel per habit
       }),
     });
 
@@ -77,9 +78,15 @@ const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
       <input
         className="task-input"
         type="text"
-        placeholder="Habit"
+        placeholder="Habit Title"
         value={habitTitle}
         onChange={(e) => setHabitTitle(e.target.value)}
+      />
+      {/* Date Picker for Task Creation */}
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
       />
       
       <button className="taskbutton" onClick={handleCreateHabit}>

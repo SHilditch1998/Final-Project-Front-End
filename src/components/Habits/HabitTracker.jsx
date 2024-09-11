@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CreateHabit from './CreateHabit'; 
-import DeleteHabit from './DeleteHabit';
+import DeleteHabit from './DeleteHabit.jsx';
 import TaskListModal from './TaskListModal';
 import '../../App.css';
 import '../../index.css';
@@ -12,6 +12,7 @@ const HabitTracker = ({ username, graphName }) => {
   const [errorMsg, setErrorMsg] = useState('');
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isTaskListModalOpen, setIsTaskListModalOpen] = useState(false);
+ 
 
   const pixelaUser = 'graphuser';  // The Pixe.la user (always 'graphuser')
   const graphID = graphName;  // Use username as the graph ID
@@ -111,10 +112,12 @@ const HabitTracker = ({ username, graphName }) => {
     }
   };
   
-
-  const handleCompleteHabit = async (habitId) => {
-    console.log(`Complete Habit: ${habitId}`);
-    
+  const handleCompleteHabit = async (habit) => {
+    const habitId = habit.HabitId;
+    const habitTitle = habit.title;
+  
+    console.log(`Complete Habit: ${habitId}, Title: ${habitTitle}`);
+  
     const jwtToken = readcookie("jwt_token");
     if (!jwtToken) {
       console.error("User not authenticated");
@@ -122,35 +125,41 @@ const HabitTracker = ({ username, graphName }) => {
     }
   
     try {
-      // Send request to update habit
-      const response = await fetch(`http://localhost:5003/Habit/completed/${habitId}`, {
+      const response = await fetch(`http://localhost:5003/Habit/completed`, {  // Correct URL
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${jwtToken}`,
         },
+        body: JSON.stringify({
+          title: habitTitle,  // Send the title in the request body
+        }),
       });
   
       if (response.ok) {
         setHabits((prevHabits) =>
-          prevHabits.map(habit =>
-            habit.id === habitId ? { ...habit, completed: true } : habit
+          prevHabits.map(h =>
+            h.HabitId === habitId ? { ...h, completed: !h.completed } : h  // Toggle the "completed" state
           )
         );
-        console.log(`Habit ${habitId} successfully completed.`);
+        console.log(`Habit "${habitTitle}" successfully completed.`);
       } else {
-        console.error(`Failed to complete habit ${habitId}`);
+        console.error(`Failed to complete habit "${habitTitle}"`);
       }
     } catch (error) {
       console.error("Error occurred while completing habit:", error);
     }
   };
   
-
-  const handleDeleteHabit = async (habitId, habitTitle) => {
-    console.log(`Delete Habit: ${habitId}`);
   
+  
+  
+  const handleDeleteHabit = async (habit) => {
+    // Your delete logic here
+    console.log(`Delete Habit: ${habit.HabitId}`);
+    // Ensure readcookie is imported
     const jwtToken = readcookie("jwt_token");
+  
     if (!jwtToken) {
       console.error("User not authenticated");
       return;
@@ -162,25 +171,23 @@ const HabitTracker = ({ username, graphName }) => {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${jwtToken}`,
-          'X-Habit-Id': habitId,   // Pass HabitId in headers
-          'X-Habit-Title': habitTitle   // Pass title in headers
         },
-        // No body sent
+        body: JSON.stringify({
+          HabitId: habit.HabitId,
+          title: habit.title,
+        }),
       });
   
       if (response.ok) {
-        // After successfully deleting the habit, update the state
-        setHabits((prevHabits) => prevHabits.filter(habit => habit.id !== habitId));
-        console.log(`Habit ${habitId} successfully deleted.`);
+        setHabits((prevHabits) => prevHabits.filter(h => h.HabitId !== habit.HabitId));
+        console.log(`Habit ${habit.HabitId} successfully deleted.`);
       } else {
-        console.error(`Failed to delete habit ${habitId}`);
+        console.error(`Failed to delete habit ${habit.HabitId}`);
       }
     } catch (error) {
       console.error("Error occurred while deleting habit:", error);
     }
   };
-  
-
 
   return (
     <div className="habit-tracker">
@@ -217,13 +224,13 @@ const HabitTracker = ({ username, graphName }) => {
               graphID={graphID}  // Pass graphID (based on username) to CreateHabit
             />
             <button className="taskbutton close" onClick={closeCreateModal}>
-              Cancel
+              X
             </button>
           </div>
         </div>
       )}
 
-
+      
       {/* Task List Modal */}
       {isTaskListModalOpen && (
         <div className="modal-overlay">
@@ -232,13 +239,12 @@ const HabitTracker = ({ username, graphName }) => {
               habits={habits}
               setHabits={setHabits}
               onEdit={handleEditHabit}
-              isTaskListModalOpen = {isTaskListModalOpen}
-              setIsCreateModalOpen = {setIsCreateModalOpen}
               onComplete={handleCompleteHabit}
               onDelete={handleDeleteHabit}
+              graphID={graphID}
             />
             <button className="taskbutton close" onClick={closeTaskListModal}>
-              Close
+              X
             </button>
           </div>
         </div>

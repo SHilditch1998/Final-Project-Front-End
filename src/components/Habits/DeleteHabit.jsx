@@ -1,36 +1,52 @@
 import React from 'react';
 import '../../App.css';
 import '../../index.css';
+import "../../utils/readcookie";
+import "../../utils/eraseCookie";
 
-const DeleteHabit = ({ habit, onDelete, onCancel }) => {
+const DeleteHabit = ({ habit, onDelete, onCancel, graphID }) => {
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const handleDelete = async () => {
-    onDelete(habit);
-
-    // Send delete request to Pixela (if needed)
-    await updateGraph('delete', habit);
+    await onDelete(habit);  
+    // Then try deleting the pixel from Pixe.la
+    await deleteHabitFromPixela(date);
   };
 
-  const updateGraph = async (action, habit) => {
-    const token = "tokensecret";
-    const graphUser = "graphuser";
-    const graphID = 'your-graph-id';
+  const deleteHabitFromPixela = async (selectedDate) => {
+    const formattedDate = selectedDate.replace(/-/g, "");  // Format date to YYYYMMDD
+    const token = 'tokensecret';  // Pixe.la API token
+    const pixelaUser = 'graphuser';  // Fixed Pixe.la user
 
-    // Example for updating graph when a habit is deleted
-    await fetch(`https://pixe.la/v1/users/${graphUser}/graphs/${graphID}`, {
-      method: "DELETE",
+    if (!graphID) {
+      console.error('Failed to delete pixel from Pixe.la: graphID is undefined');
+      return;
+    }
+
+    // Request to delete the pixel
+    const response = await fetch(`https://pixe.la/v1/users/${pixelaUser}/graphs/${graphID}/${formattedDate}`, {
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
-        "X-USER-TOKEN": token,
+        'Content-Type': 'application/json',
+        'X-USER-TOKEN': token,
       },
-      body: JSON.stringify({
-        date: new Date().toISOString().split('T')[0],
-      }),
     });
+
+    if (!response.ok) {
+      console.error('Failed to delete pixel from Pixe.la');
+    }
   };
 
   return (
     <div className="delete-confirmation">
       <p>Are you sure you want to delete "{habit.title}"?</p>
+
+      {/* Date Picker for Task Deletion */}
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+      />
+
       <div>
         <button className="taskbutton" onClick={handleDelete}>Yes, Delete</button>
         <button className="taskbutton close" onClick={onCancel}>Cancel</button>

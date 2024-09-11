@@ -1,15 +1,19 @@
 import React, { useState, useReducer } from 'react';
 import '../../App.css';
 import '../../index.css';
-import './DeleteHabit';
-import './UpdateHabit';
+import DeleteHabit from './DeleteHabit';
+import readcookie from '../../utils/readcookie';
 
-const TaskListModal = ({ habits, setHabits, onEdit, onComplete, onDelete, isCreateModalOpen, setIsCreateModalOpen }) => {
+const TaskListModal = ({ habits, setHabits, onEdit, onComplete, graphID  }) => {
   const [editMode, setEditMode] = useState(false);
-  const [newTitle, setNewTitle] = useState(habits.text);
+  const [newTitle, setNewTitle] = useState('');
   const [forceRender, setForceRender] = useState(false);
+  
+  // State for Delete Modal
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedHabit, setSelectedHabit] = useState(null);
 
-  const[,forceUpdate] =useReducer(x => x+1,0)
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const handleEditClick = (habit) => {
     setEditMode(habit.HabitId);
@@ -19,82 +23,100 @@ const TaskListModal = ({ habits, setHabits, onEdit, onComplete, onDelete, isCrea
   const handleSaveEdit = (habit, habitId) => {
     console.log(newTitle);
     
-    onEdit(habitId, newTitle);
-    setHabits(habits);
-    console.log(habits);
-    habit.title=newTitle;
-    setEditMode(!editMode); 
-    setIsCreateModalOpen(!isCreateModalOpen);
-    forceUpdate;
+    onEdit(habitId, newTitle);  // Call the parent-provided onEdit function
+    habit.title = newTitle;  // Update the local habit title
+    setEditMode(false);  // Exit edit mode
+    setForceRender(!forceRender);  // Force re-render
   };
 
+  const handleDeleteClick = (habit) => {
+    setSelectedHabit(habit);  // Set the selected habit for deletion
+    setIsDeleteModalOpen(true);  // Open the delete modal
+  };
 
-  const handleCompleteHabit = async (habitId) => {
+  const handleDeleteHabit = async (habit) => {
+    const habitId = habit.HabitId;
+    const jwtToken = readcookie("jwt_token");
+
     if (!jwtToken) {
       console.error("User not authenticated");
       return;
     }
-  
+
     try {
-      const response = await fetch(`http://localhost:5003/Habit/completed/${habitId}`, {
-        method: 'PUT',
+      const response = await fetch(`http://localhost:5003/Habit/remove`, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${jwtToken}`,
         },
+        body: JSON.stringify({
+          HabitId: habitId,
+          title: habit.title
+        }),
       });
-  
+
       if (response.ok) {
-        onHabitCompleted(habitId); // Notify parent of the completion
-        console.log(`Habit ${habitId} successfully completed.`);
+        setHabits(prevHabits => prevHabits.filter(h => h.HabitId !== habitId));  // Remove the habit from the state
+        console.log(`Habit ${habitId} successfully deleted.`);
+        setIsDeleteModalOpen(false);  // Close the modal
+
+        // Call the delete function for Pixela with graphID
+        await deleteHabitFromPixela(habit, graphID);
       } else {
-        console.error(`Failed to complete habit ${habitId}`);
+        console.error(`Failed to delete habit ${habitId}`);
       }
     } catch (error) {
-      console.error("Error occurred while completing habit:", error);
+      console.error("Error occurred while deleting habit:", error);
     }
   };
 
-
   return (
     <div>
-      <ul className="listoftasks">
-        {habits.map((habit) => (
-          <li key={habit.HabitId}>
-            {editMode === habit.HabitId ? (
-              <input
-                type="text"
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
-              />
-            ) : (
-              <span style={{ textDecoration: habit.completed ? 'line-through' : 'none' }}>
-                {habit.title}
-              </span>
-            )}
-          <div className="habitbutton-container">
-            {/* Edit/Save Button */}
-            {editMode === habit.HabitId ? (
-              <button className="habitbutton" onClick={() => {handleSaveEdit(habit,habit.HabitId); setForceRender(!forceRender)}}>Save</button>
-            ) : (
-              <button className="habitbutton" onClick={() => handleEditClick(habit)}>Edit</button>
-            )}
+<ul className="listoftasks">
+  {habits.map((habit) => (
+    <li key={habit.HabitId}>
+      {editMode === habit.HabitId ? (
+        <input
+          type="text"
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+        />
+      ) : (
+        <span style={{ textDecoration: habit.completed ? 'line-through' : 'none' }}>
+          {habit.title}
+        </span>
+      )}
+      <div className="habitbutton-container">
+        {/* Edit/Save Button */}
+        {editMode === habit.HabitId ? (
+          <button className="habitbutton" onClick={() => handleSaveEdit(habit, habit.HabitId)}>Save</button>
+        ) : (
+          <button className="habitbutton" onClick={() => handleEditClick(habit)}>Edit</button>
+        )}
 
-            {/* Complete Button */}
-            <button className="habitbutton" onClick={() => onComplete(habit.HabitId)}>
-              {habit.completed ? 'Undo' : 'Complete'}
-            </button>
-            {/* Change to toggle box */}
+        {/* Complete Button */}
+        <button className="habitbutton" onClick={() => onComplete(habit)}>
+          {habit.completed ? 'Undo' : 'Complete'}
+        </button>
 
-            {/* Delete Button */}
-            <button className="habitbutton" onClick={() => onDelete(habit.HabitId)}>Delete</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+        {/* Delete Button */}
+        <button className="habitbutton" onClick={() => handleDeleteClick(habit)}>Delete</button>
+      </div>
+    </li>
+  ))}
+</ul>
+
+
+      {isDeleteModalOpen && selectedHabit && (
+        <DeleteHabit
+          habit={selectedHabit}
+          onDelete={handleDeleteHabit}
+          onCancel={() => setIsDeleteModalOpen(false)}
+          graphID={graphID}  // Pass graphID to DeleteHabit
+        />
+      )}
     </div>
-
-    
   );
 };
 

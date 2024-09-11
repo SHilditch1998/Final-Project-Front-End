@@ -245,6 +245,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   color: black;
+  position: relative;
+  padding: 20px;
 }
 
 .modal-content h2 {
@@ -282,6 +284,13 @@ button:hover {
 button.close {
   background: #ff4d4d;
   color: white;
+  position: absolute; /* Position the button inside the modal */
+  top: 10px;          /* Distance from the top */
+  right: 10px;        /* Distance from the right */
+  padding: 5px 10px;  /* Add some padding for a better look */
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
 }
 
 button.close:hover {
