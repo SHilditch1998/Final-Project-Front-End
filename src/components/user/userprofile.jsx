@@ -34,7 +34,7 @@ const UserProfile = () => {
         const output2 = output.ListAccounts[2]
         if (response.ok) {
           console.log(output);
-          
+          //remove the 2 when backend api is fixed
           const fetchedUsername = output2.username || 'Username not found';
           setUsername(fetchedUsername);
           setAvatar(output2.avatar || '');

@@ -88,7 +88,7 @@ const Register = () => {
         name: "User Activity Graph",
         unit: "commit", // You can change this to any unit relevant to your app
         type: "int",
-        color: "shibafu", // Color of the graph
+        color: "ichou", // Color of the graph
       }),
     });
   };

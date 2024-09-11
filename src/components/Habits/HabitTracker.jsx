@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import CreateHabit from './CreateHabit';  // Modal for creating a new task (habit)
+import CreateHabit from './CreateHabit'; 
+import TaskListModal from './TaskListModal';
+import HabitModal from './HabitModal.jsx';
 import '../../App.css';
 import '../../index.css';
 import readcookie from '../../utils/readcookie';
@@ -8,7 +10,8 @@ const HabitTracker = ({ username }) => {
   const [habits, setHabits] = useState([]);
   const [graphData, setGraphData] = useState(null);  // State for storing the graph
   const [errorMsg, setErrorMsg] = useState('');
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // Modal state
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isTaskListModalOpen, setIsTaskListModalOpen] = useState(false);
 
   const pixelaUser = 'graphuser';  // The Pixe.la user (always 'graphuser')
   const graphID = username;  // Use username as the graph ID
@@ -64,18 +67,31 @@ const HabitTracker = ({ username }) => {
     fetchHabitsAndGraph();
   }, [username]);
 
-  // Open and close modal
   const openCreateModal = () => setIsCreateModalOpen(true);
   const closeCreateModal = () => setIsCreateModalOpen(false);
+  
+  const openTaskListModal = () => setIsTaskListModalOpen(true);
+  const closeTaskListModal = () => setIsTaskListModalOpen(false);
+
+  const handleEditHabit = (habitId, newTitle) => {
+    // Logic to handle editing a habit
+    console.log(`Edit Habit: ${habitId}, New Title: ${newTitle}`);
+  };
+
+  const handleCompleteHabit = (habitId) => {
+    // Logic to handle completing a habit
+    console.log(`Complete Habit: ${habitId}`);
+  };
+
+  const handleDeleteHabit = (habitId) => {
+    // Logic to handle deleting a habit
+    console.log(`Delete Habit: ${habitId}`);
+  };
 
   return (
     <div className="habit-tracker">
-      <h3>Your Habits</h3>
 
-      {/* Add Task Button */}
-      <button className="taskbutton" onClick={openCreateModal}>
-        Add New Task
-      </button>
+      <h2>Your Habits</h2>
 
       {/* Display Graph */}
       {graphData ? (
@@ -85,6 +101,21 @@ const HabitTracker = ({ username }) => {
       ) : (
         <p>{errorMsg || 'Graph loading...'}</p>
       )}
+
+  
+      <button className="taskbutton" onClick={openCreateModal}>
+        Add New Task
+      </button>
+
+    
+      <button className="taskbutton" onClick={openTaskListModal}>
+        Show Tasks
+      </button>
+
+     
+      {/* <button className="taskbutton" onClick={DeleteHabit}>
+        Delete Task
+      </button> */}
 
       {/* List Habits */}
       <div className="habit-list">
@@ -114,8 +145,41 @@ const HabitTracker = ({ username }) => {
           </div>
         </div>
       )}
+
+
+      {/* Task List Modal */}
+      {isTaskListModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <TaskListModal
+              habits={habits}
+              onEdit={handleEditHabit}
+              onComplete={handleCompleteHabit}
+              onDelete={handleDeleteHabit}
+            />
+            <button className="taskbutton close" onClick={closeTaskListModal}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* List Habits */}
+      <div className="habit-list">
+        {habits.length > 0 ? (
+          habits.map(habit => (
+            <div key={habit.id} className="habit-item">
+              <span>{habit.title}</span>
+            </div>
+          ))
+        ) : (
+          <p>No habits available.</p>
+        )}
+      </div>
+
     </div>
   );
 };
+
 
 export default HabitTracker;
