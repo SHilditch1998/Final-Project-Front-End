@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import readcookie from "../../utils/readcookie";
+import '../../App.css';
+import '../../index.css';
 
 const DeleteUser = () => {
   const [email, setEmail] = useState("");
@@ -63,24 +65,27 @@ const DeleteUser = () => {
   };
 
   return (
-    <form onSubmit={submitHandler}>
-      <input 
-        type="email" 
-        value={email} 
-        onChange={(e) => setEmail(e.target.value)} 
-        placeholder="Email" 
-        required 
-      />
-      <input 
-        type="password" 
-        value={password} 
-        onChange={(e) => setPassword(e.target.value)} 
-        placeholder="Password" 
-        required 
-      />
-      <button type="submit">Delete Account</button>
-      {message && <p>{message}</p>}
-    </form>
+<form onSubmit={submitHandler} className="deletebox">
+  <input 
+    type="email" 
+    value={email} 
+    onChange={(e) => setEmail(e.target.value)} 
+    placeholder="Email" 
+    required 
+    className="delUser"
+  />
+  <input 
+    type="password" 
+    value={password} 
+    onChange={(e) => setPassword(e.target.value)} 
+    placeholder="Password" 
+    required 
+    className="delUser"
+  />
+  <button type="submit" className="delbtn">Delete Account</button>
+  {message && <p>{message}</p>}
+</form>
+
   );
 };
 

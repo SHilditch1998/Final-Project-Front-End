@@ -230,7 +230,10 @@ const HabitTracker = ({ username, graphName }) => {
           <div className="modal-content">
             <TaskListModal
               habits={habits}
+              setHabits={setHabits}
               onEdit={handleEditHabit}
+              isTaskListModalOpen = {isTaskListModalOpen}
+              setIsCreateModalOpen = {setIsCreateModalOpen}
               onComplete={handleCompleteHabit}
               onDelete={handleDeleteHabit}
             />

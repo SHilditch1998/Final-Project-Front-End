@@ -1,17 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
+import '../../App.css';
+import '../../index.css';
+import './DeleteHabit';
+import './UpdateHabit';
 
-const TaskListModal = ({ habits, onEdit, onComplete, onDelete }) => {
-  const [editMode, setEditMode] = useState(null); // Track the habit being edited
-  const [newTitle, setNewTitle] = useState('');
+const TaskListModal = ({ habits, setHabits, onEdit, onComplete, onDelete, isCreateModalOpen, setIsCreateModalOpen }) => {
+  const [editMode, setEditMode] = useState(false);
+  const [newTitle, setNewTitle] = useState(habits.text);
+  const [forceRender, setForceRender] = useState(false);
+
+  const[,forceUpdate] =useReducer(x => x+1,0)
 
   const handleEditClick = (habit) => {
     setEditMode(habit.HabitId);
-    setNewTitle(habit.title); // Pre-fill input with existing title
+    setNewTitle(habit.title); // this is just the habit input
   };
 
-  const handleSaveEdit = (habitId) => {
+  const handleSaveEdit = (habit, habitId) => {
+    console.log(newTitle);
+    
     onEdit(habitId, newTitle);
-    setEditMode(null); // Exit edit mode after saving
+    setHabits(habits);
+    console.log(habits);
+    habit.title=newTitle;
+    setEditMode(!editMode); 
+    setIsCreateModalOpen(!isCreateModalOpen);
+    forceUpdate;
   };
 
 
@@ -58,10 +72,10 @@ const TaskListModal = ({ habits, onEdit, onComplete, onDelete }) => {
                 {habit.title}
               </span>
             )}
-          <div class="habitbutton-container">
+          <div className="habitbutton-container">
             {/* Edit/Save Button */}
             {editMode === habit.HabitId ? (
-              <button className="habitbutton" onClick={() => handleSaveEdit(habit.HabitId)}>Save</button>
+              <button className="habitbutton" onClick={() => {handleSaveEdit(habit,habit.HabitId); setForceRender(!forceRender)}}>Save</button>
             ) : (
               <button className="habitbutton" onClick={() => handleEditClick(habit)}>Edit</button>
             )}

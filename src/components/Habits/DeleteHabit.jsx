@@ -1,4 +1,6 @@
 import React from 'react';
+import '../../App.css';
+import '../../index.css';
 
 const DeleteHabit = ({ habit, onDelete, onCancel }) => {
   const handleDelete = async () => {
