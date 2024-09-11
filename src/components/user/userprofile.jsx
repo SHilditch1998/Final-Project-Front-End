@@ -11,6 +11,7 @@ const UserProfile = () => {
   const [avatar, setAvatar] = useState('');
   const [status, setStatus] = useState(0);
   const [gifSrc, setGifSrc] = useState("ducky.gif");
+  const [graphName, setGraphName] = useState('');
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -21,7 +22,7 @@ const UserProfile = () => {
       }
   
       try {
-        const response = await fetch("http://localhost:5003/Friends/List", {
+        const response = await fetch("http://localhost:5003/account/find", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -29,25 +30,29 @@ const UserProfile = () => {
           },
         });
   
-        const output = await response.json();
-        console.log('API Output:', output);
-        const output2 = output.ListAccounts[2]
-        if (response.ok) {
-          console.log(output);
-          //remove the 2 when backend api is fixed
-          const fetchedUsername = output2.username || 'Username not found';
-          setUsername(fetchedUsername);
-          setAvatar(output2.avatar || '');
-          setStatus(output2.status || 0);
-          setError(null);
-        } else {
-          setError(output2.message || "Failed to fetch user data.");
-        }
-      } catch (err) {
-        console.error("Error fetching user data:", err);
-        setError("There was an error fetching the user data.");
+      const outputData = await response.json(); 
+      const username = outputData.email.username;
+      const graphName = outputData.usergraphs[0].title
+      console.log('API Output:', outputData);
+
+      const sanitizedUsername = username.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+      if (response.ok) {
+        // const fetchedUsername = outputData.username || 'Username not found'; 
+        setUsername(username);
+        setGraphName(sanitizedUsername)
+        setAvatar(outputData.avatar || '');
+        setStatus(outputData.status || 0);
+        setError(null);
+      } else {
+        setError(outputData.message || "Failed to fetch user data.");
       }
-    };
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+      setError("There was an error fetching the user data.");
+    }
+  };
+
   
     fetchUserData();
   }, []);
@@ -91,7 +96,7 @@ const UserProfile = () => {
 
         <div className="user-data">
           {/* Pass username as prop to HabitTracker */}
-          <HabitTracker username={username} />
+          <HabitTracker username={username} graphName={graphName} />
         </div>
       </div>
     </div>

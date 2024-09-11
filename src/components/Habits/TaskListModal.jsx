@@ -43,6 +43,7 @@ const TaskListModal = ({ habits, onEdit, onComplete, onDelete }) => {
             <button onClick={() => onComplete(habit.HabitId)}>
               {habit.completed ? 'Undo' : 'Complete'}
             </button>
+            {/* Change to toggle box */}
 
             {/* Delete Button */}
             <button onClick={() => onDelete(habit.HabitId)}>Delete</button>

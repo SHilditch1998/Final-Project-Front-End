@@ -6,7 +6,7 @@ import '../../App.css';
 import '../../index.css';
 import readcookie from '../../utils/readcookie';
 
-const HabitTracker = ({ username }) => {
+const HabitTracker = ({ username, graphName }) => {
   const [habits, setHabits] = useState([]);
   const [graphData, setGraphData] = useState(null);  // State for storing the graph
   const [errorMsg, setErrorMsg] = useState('');
@@ -14,7 +14,7 @@ const HabitTracker = ({ username }) => {
   const [isTaskListModalOpen, setIsTaskListModalOpen] = useState(false);
 
   const pixelaUser = 'graphuser';  // The Pixe.la user (always 'graphuser')
-  const graphID = username;  // Use username as the graph ID
+  const graphID = graphName;  // Use username as the graph ID
   console.log(username);
   
   const token = 'tokensecret';  // Pixe.la user token (use the actual token)
@@ -112,10 +112,6 @@ const HabitTracker = ({ username }) => {
         Show Tasks
       </button>
 
-     
-      {/* <button className="taskbutton" onClick={DeleteHabit}>
-        Delete Task
-      </button> */}
 
       {/* List Habits */}
       <div className="habit-list">
@@ -163,19 +159,6 @@ const HabitTracker = ({ username }) => {
           </div>
         </div>
       )}
-
-      {/* List Habits */}
-      <div className="habit-list">
-        {habits.length > 0 ? (
-          habits.map(habit => (
-            <div key={habit.id} className="habit-item">
-              <span>{habit.title}</span>
-            </div>
-          ))
-        ) : (
-          <p>No habits available.</p>
-        )}
-      </div>
 
     </div>
   );
