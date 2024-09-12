@@ -8,7 +8,7 @@ import ListUsers from './components/user/listUsers';
 import UpdateUser from './components/user/updateuser';
 import DeleteUser from './components/user/deleteuser';
 import UserProfile from './components/user/userprofile';
-import Home from './components/Home';
+import Home from './components/home';
 import ProtectedRoute from './components/user/ProtectedRoute';
 
 function App() {
