@@ -29,7 +29,7 @@ const HabitTracker = ({ username, graphName }) => {
 
       try {
         // Fetch habits from your backend
-        const habitResponse = await fetch('http://localhost:5003/Habits/list', {
+        const habitResponse = await fetch('https://final-project-back-end-production.up.railway.app', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ const HabitTracker = ({ username, graphName }) => {
     }
   
     try {
-      const response = await fetch(`http://localhost:5003/Habit/edit`, {
+      const response = await fetch(`https://final-project-back-end-production.up.railway.app`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ const HabitTracker = ({ username, graphName }) => {
     }
   
     try {
-      const response = await fetch(`http://localhost:5003/Habit/completed`, {  // Correct URL
+      const response = await fetch(`https://final-project-back-end-production.up.railway.app`, {  // Correct URL
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ const HabitTracker = ({ username, graphName }) => {
     }
   
     try {
-      const response = await fetch(`http://localhost:5003/Habit/remove`, {
+      const response = await fetch(`https://final-project-back-end-production.up.railway.app`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

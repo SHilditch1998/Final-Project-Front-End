@@ -23,7 +23,7 @@ const CreateHabit = ({ onClose, onHabitCreated, graphID }) => {
 
     try {
       // Add the habit to your backend
-      const response = await fetch('http://localhost:5003/Habit/Add', {
+      const response = await fetch('https://final-project-back-end-production.up.railway.app', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
