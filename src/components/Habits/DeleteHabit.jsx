@@ -18,7 +18,6 @@ const DeleteHabit = ({ habit, onDelete, onCancel }) => {
       </p>
       <div>
         <button className="taskbutton" onClick={handleDelete}>Yes, Delete</button>
-        <button className="taskbutton close" onClick={onCancel}>Cancel</button>
       </div>
     </div>
   );

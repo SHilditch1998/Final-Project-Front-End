@@ -86,9 +86,9 @@ const Register = () => {
       body: JSON.stringify({
         id: userId, // Use the sanitized username as the graph ID
         name: "User Activity Graph",
-        unit: "commit", // You can change this to any unit relevant to your app
+        unit: "commit", // You can change this to any unit relevant to the app
         type: "int",
-        color: "ichou", // Color of the graph
+        color: "ichou", 
       }),
     });
   };

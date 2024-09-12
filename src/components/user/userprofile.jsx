@@ -56,6 +56,9 @@ const UserProfile = () => {
     fetchUserData();
   }, []);
     
+  const updateProgress = (newProgress) => {
+    setStatus(newProgress);  // Update the progress state
+  };
 
   const handleGifClick = () => {
     setGifSrc("heart.gif");
@@ -94,8 +97,8 @@ const UserProfile = () => {
         </div>
 
         <div className="user-data">
-          {/* Pass username as prop to HabitTracker */}
-          <HabitTracker username={username} graphName={graphName} />
+          {/* Pass username, graphName, and updateProgress as props to HabitTracker */}
+          <HabitTracker username={username} graphName={graphName} updateProgress={updateProgress} />
         </div>
       </div>
     </div>
