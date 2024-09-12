@@ -13,7 +13,7 @@ const Home = () => {
     event.preventDefault();
     
     try {
-      const response = await fetch("https://final-project-back-end-production.up.railway.app", {
+      const response = await fetch("https://final-project-back-end-production.up.railway.app/Account/Login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

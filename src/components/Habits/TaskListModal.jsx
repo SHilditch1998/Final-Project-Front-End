@@ -42,7 +42,7 @@ const TaskListModal = ({ habits, setHabits, onEdit, onComplete, graphID  }) => {
     }
 
     try {
-      const response = await fetch(`https://final-project-back-end-production.up.railway.app`, {
+      const response = await fetch(`https://final-project-back-end-production.up.railway.app/Habit/remove`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

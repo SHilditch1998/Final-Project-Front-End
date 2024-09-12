@@ -37,7 +37,7 @@ const Register = () => {
 
     try {
       // Step 1: Register the user in your backend
-      const response = await fetch('https://final-project-back-end-production.up.railway.app', {
+      const response = await fetch('https://final-project-back-end-production.up.railway.app/Account/Register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

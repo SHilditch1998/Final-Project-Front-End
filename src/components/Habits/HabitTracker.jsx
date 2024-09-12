@@ -29,7 +29,7 @@ const HabitTracker = ({ username, graphName }) => {
 
       try {
         // Fetch habits from your backend
-        const habitResponse = await fetch('https://final-project-back-end-production.up.railway.app', {
+        const habitResponse = await fetch('https://final-project-back-end-production.up.railway.app/Habits/list', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ const HabitTracker = ({ username, graphName }) => {
     }
   
     try {
-      const response = await fetch(`https://final-project-back-end-production.up.railway.app`, {
+      const response = await fetch(`https://final-project-back-end-production.up.railway.app/Habit/edit`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ const HabitTracker = ({ username, graphName }) => {
     }
   
     try {
-      const response = await fetch(`https://final-project-back-end-production.up.railway.app`, {  // Correct URL
+      const response = await fetch(`https://final-project-back-end-production.up.railway.app/Habit/completed`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ const HabitTracker = ({ username, graphName }) => {
     }
   
     try {
-      const response = await fetch(`https://final-project-back-end-production.up.railway.app`, {
+      const response = await fetch(`https://final-project-back-end-production.up.railway.app/Habit/remove`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

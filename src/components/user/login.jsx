@@ -11,7 +11,9 @@ const Login = () => {
     event.preventDefault();
     
     try {
-      const response = await fetch("https://final-project-back-end-production.up.railway.app", {
+      console.log("ttesting");
+      
+      const response = await fetch("https://final-project-back-end-production.up.railway.app/Account/Login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -23,6 +25,8 @@ const Login = () => {
       });
 
       const output = await response.json();
+      console.log(output);
+      
       if (output.token) {
         writecookie("jwt_token", output.token, 14);
         navigate('/user-profile'); // Redirect to the profile page after login

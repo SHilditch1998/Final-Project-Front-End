@@ -16,7 +16,7 @@ const ListUsers = () => {
     }
 
     try {
-      const response = await fetch("https://final-project-back-end-production.up.railway.app", {
+      const response = await fetch("https://final-project-back-end-production.up.railway.app/Friends/List", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

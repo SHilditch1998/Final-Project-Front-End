@@ -12,7 +12,7 @@ const UpdateUser = () => {
     const token = readcookie("jwt_token");
 
     try {
-      const response = await fetch("https://final-project-back-end-production.up.railway.app", {
+      const response = await fetch("https://final-project-back-end-production.up.railway.app/Account/UpdatePassword", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

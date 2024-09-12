@@ -16,7 +16,7 @@ const DeleteUser = () => {
 
     try {
       // Step 1: Delete the user account
-      const response = await fetch("https://final-project-back-end-production.up.railway.app", {
+      const response = await fetch("https://final-project-back-end-production.up.railway.app/Account/DeleteDuckling", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

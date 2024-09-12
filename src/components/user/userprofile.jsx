@@ -22,7 +22,7 @@ const UserProfile = () => {
       }
   
       try {
-        const response = await fetch("https://final-project-back-end-production.up.railway.app", {
+        const response = await fetch("https://final-project-back-end-production.up.railway.app/account/find", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
