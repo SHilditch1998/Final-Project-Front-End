@@ -11,7 +11,7 @@ const Login = () => {
     event.preventDefault();
     
     try {
-      console.log("ttesting");
+      console.log("testing");
       
       const response = await fetch("https://final-project-back-end-production.up.railway.app/Account/Login", {
         method: "POST",

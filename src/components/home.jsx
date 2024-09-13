@@ -7,7 +7,7 @@ const Home = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const token = readcookie('jwt_token');
+  // const token = readcookie('jwt_token');
 
   const submitHandler = async (event) => {
     event.preventDefault();

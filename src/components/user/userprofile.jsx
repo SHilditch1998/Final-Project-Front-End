@@ -35,7 +35,7 @@ const UserProfile = () => {
       console.log(outputData);
       
     
-      console.log('API Output:', outputData);
+      // console.log('API Output:', outputData);
 
       const sanitizedUsername = username.toLowerCase().replace(/[^a-z0-9]/g, '');
 

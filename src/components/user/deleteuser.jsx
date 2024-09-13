@@ -41,8 +41,23 @@ const DeleteUser = () => {
         setMessage("User deleted successfully!");
 
         // Step 2: Delete the corresponding Pixela graph
+   
         const deleteGraphResponse = await deleteGraph(output.userId);
-        if (deleteGraphResponse.ok) {
+        return await fetch(`https://pixe.la//v1/users/graphuser/graphs/${graphID}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "X-USER-TOKEN": toktokensecreten,
+          },
+          body: JSON.stringify({
+            "token":"tokensecret",
+            "username":"graphuser",
+            "agreeTermsOfService":"yes",
+            "notMinor":"yes",
+            "thanksCode":"639becb61a3bd96d9f521acfca7310eba71e465253e685d13c7be213fa5fa940"
+          })}) 
+
+        if (deleteGraphResponse.ok === true) {
           setMessage("User and graph deleted successfully!");
         } else {
           setMessage("User deleted, but failed to delete the graph.");
@@ -55,38 +70,38 @@ const DeleteUser = () => {
         setTimeout(() => {
           navigate("/login"); // Redirect to login page or home
         }, 3000);
-
-      } else {
-        setMessage(`Error: ${output.message || 'Failed to delete user.'}`);
-      }
-    } catch (error) {
-      setMessage(`Error: ${error.message}`);
+      
+        } else {
+          setMessage(`Error: ${output.message || 'Failed to delete user.'}`);
+        }
+        } catch (error) {
+          setMessage(`Error: ${error.message}`);
     }
   };
 
   return (
-<form onSubmit={submitHandler} className="deletebox">
-  <input 
-    type="email" 
-    value={email} 
-    onChange={(e) => setEmail(e.target.value)} 
-    placeholder="Email" 
-    required 
-    className="delUser"
-  />
-  <input 
-    type="password" 
-    value={password} 
-    onChange={(e) => setPassword(e.target.value)} 
-    placeholder="Password" 
-    required 
-    className="delUser"
-  />
-  <button type="submit" className="delbtn">Delete Account</button>
-  {message && <p>{message}</p>}
-</form>
-
+    <form onSubmit={submitHandler} className="deletebox">
+      <input
+        className="deletebox-input delUser"  // Combined class names here
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+        required
+      />
+      <input
+        className="deletebox-input delUser"  // Combined class names here
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+        required
+      />
+      <button type="submit" className="delbtn">Delete Account</button>
+      {message && <p>{message}</p>}
+    </form>
   );
+  
 };
 
 export default DeleteUser;
