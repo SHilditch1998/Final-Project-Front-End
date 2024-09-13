@@ -32,7 +32,9 @@ const UserProfile = () => {
   
       const outputData = await response.json(); 
       const username = outputData.email.username;
-      const graphName = outputData.usergraphs[0].title
+      console.log(outputData);
+      
+    
       console.log('API Output:', outputData);
 
       const sanitizedUsername = username.toLowerCase().replace(/[^a-z0-9]/g, '');

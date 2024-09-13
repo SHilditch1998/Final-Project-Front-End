@@ -44,6 +44,9 @@ const Register = () => {
         },
         body: JSON.stringify({ name, username, email, password }), // Send user data to backend
       });
+      console.log(response);
+      
+
 
       // If registration fails, throw an error
       if (!response.ok) {
@@ -60,10 +63,11 @@ const Register = () => {
 
       // If successful, display a success message
       setSuccessMessage('Registration and graph creation successful!');
+  console.log("please work");
 
-      setTimeout(() => {
-        navigate(`/profile/${sanitizedUsername}`);  // Redirect to user profile page
-      }, 1500);
+   navigate(`/user-profile`);  // Redirect to user profile page
+     console.log(`/profile/${sanitizedUsername}`);
+     
 
     } catch (error) {
       // Set error message if registration or graph creation fails
